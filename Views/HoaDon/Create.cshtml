@@ -1,0 +1,34 @@
+﻿@model App.Models.HoaDon
+
+@{
+    ViewData["Title"] = "Tạo Hóa đơn mới";
+}
+
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary">@ViewData["Title"]</h6>
+    </div>
+    <div class="card-body">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <div class="mb-3">
+                <label asp-for="MaHoaDon" class="form-label"></label>
+                <input asp-for="MaHoaDon" class="form-control" />
+                <span asp-validation-for="MaHoaDon" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="MaBenhNhan" class="form-label">Bệnh nhân</label>
+                <select asp-for="MaBenhNhan" class="form-control" asp-items="ViewBag.MaBenhNhan">
+                    <option value="">-- Chọn bệnh nhân --</option>
+                </select>
+                <span asp-validation-for="MaBenhNhan" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <input type="submit" value="Tạo và tiếp tục" class="btn btn-primary" />
+                <a asp-action="Index" class="btn btn-secondary">Quay lại</a>
+            </div>
+        </form>
+    </div>
+</div>

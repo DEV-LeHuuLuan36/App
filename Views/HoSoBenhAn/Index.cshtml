@@ -1,0 +1,76 @@
+﻿@model App.ViewModels.BenhAnViewModel
+
+@{
+    ViewData["Title"] = "Hồ sơ Bệnh án: " + Model.BenhNhan.HoTenBenhNhan;
+}
+
+@if (TempData["Success"] != null)
+{
+    <div class="alert alert-success">@TempData["Success"]</div>
+}
+
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary">Thông tin Bệnh nhân</h6>
+    </div>
+    <div class="card-body">
+        <dl class="row">
+            <dt class="col-sm-3">Mã Bệnh nhân</dt>
+            <dd class="col-sm-9">@Model.BenhNhan.MaBenhNhan</dd>
+            <dt class="col-sm-3">Họ tên</dt>
+            <dd class="col-sm-9">@Model.BenhNhan.HoTenBenhNhan</dd>
+            <dt class="col-sm-3">Phòng</dt>
+            <dd class="col-sm-9">@Model.BenhNhan.MaPhongNavigation.TenPhong</dd>
+        </dl>
+        <a asp-controller="BenhNhan" asp-action="Index" class="btn btn-secondary">Quay lại danh sách</a>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-lg-6">
+        <div class="card shadow mb-4">
+            <div class="card-header py-3 d-flex justify-content-between align-items-center">
+                <h6 class="m-0 font-weight-bold text-primary">Lịch sử Bệnh án</h6>
+                <a asp-action="TaoHoSo" asp-route-maBenhNhan="@Model.BenhNhan.MaBenhNhan" class="btn btn-primary btn-sm">
+                    <i class="fas fa-plus"></i> Tạo Bệnh án mới
+                </a>
+            </div>
+            <div class="card-body">
+                @foreach (var hoSo in Model.DanhSachHoSoBenhAn)
+                {
+                    <div class="mb-3">
+                        <strong>@hoSo.NgayLap.Value.ToString("dd/MM/yyyy") - Chuẩn đoán: @hoSo.ChuanDoan</strong>
+                        <p>Tình trạng: @hoSo.TinhTrang</p>
+                        <p>Triệu chứng: @hoSo.TrieuChung</p>
+                    </div>
+                    <hr />
+                }
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-6">
+        <div class="card shadow mb-4">
+            <div class="card-header py-3 d-flex justify-content-between align-items-center">
+                <h6 class="m-0 font-weight-bold text-success">Quá trình Điều trị</h6>
+                <a asp-action="ThemDieuTri" asp-route-maBenhNhan="@Model.BenhNhan.MaBenhNhan" class="btn btn-success btn-sm">
+                    <i class="fas fa-plus"></i> Thêm Ghi chú
+                </a>
+            </div>
+            <div class="card-body">
+                @foreach (var dieuTri in Model.DanhSachDieuTri)
+                {
+                    <div class="mb-3">
+                        <strong>@dieuTri.NgayDieuTri.Value.ToString("dd/MM/yyyy") - BS. @dieuTri.MaBacSiNavigation.TenBacSi</strong>
+                        <p>@dieuTri.NoiDung</p>
+
+                        <a asp-controller="DonThuoc" asp-action="Index" asp-route-id="@dieuTri.MaDieuTri" class="btn btn-outline-primary btn-sm">
+                            <i class="fas fa-pills"></i> Xem/Kê đơn thuốc
+                        </a>
+                    </div>
+                    <hr />
+                }
+            </div>
+        </div>
+    </div>
+</div>

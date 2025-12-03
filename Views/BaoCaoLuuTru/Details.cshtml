@@ -1,0 +1,34 @@
+﻿@model App.Models.BaoCao
+
+@{
+    ViewData["Title"] = "Chi tiết Báo cáo";
+}
+
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary">@ViewData["Title"]</h6>
+    </div>
+    <div class="card-body">
+        <dl class="row">
+            <dt class="col-sm-3">Mã Báo cáo</dt>
+            <dd class="col-sm-9">@Model.MaBaoCao</dd>
+            <dt class="col-sm-3">Loại</dt>
+            <dd class="col-sm-9">@Model.LoaiBaoCao</dd>
+            <dt class="col-sm-3">Từ ngày - Đến ngày</dt>
+            <dd class="col-sm-9">@Model.TuNgay?.ToString("dd/MM/yyyy") - @Model.DenNgay?.ToString("dd/MM/yyyy")</dd>
+            <dt class="col-sm-3">Người tạo</dt>
+            <dd class="col-sm-9">@Model.NguoiTaoNavigation?.HoTen</dd>
+            <dt class="col-sm-3">Trạng thái</dt>
+            <dd class="col-sm-9">@Model.TrangThai</dd>
+            <dt class="col-sm-3">Người duyệt</dt>
+            <dd class="col-sm-9">@Model.NguoiDuyetNavigation?.HoTen</dd>
+        </dl>
+
+        <hr />
+
+        <h5>Nội dung Báo cáo (Dữ liệu JSON/HTML...)</h5>
+        <pre class="bg-black p-3 rounded text-white"><code>@Model.NoiDung</code></pre>
+
+        <a asp-action="Index" class="btn btn-secondary mt-3">Quay lại danh sách</a>
+    </div>
+</div>

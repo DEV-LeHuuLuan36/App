@@ -1,0 +1,64 @@
+﻿@model App.Models.PhieuNhapThuoc
+@{
+    ViewData["Title"] = "Chi tiết Phiếu nhập: " + Model.MaPhieuNhap;
+    var chiTietList = ViewBag.ChiTietPhieuNhap as List<ChiTietPhieuNhap>;
+}
+
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary">@ViewData["Title"]</h6>
+    </div>
+    <div class="card-body">
+        <dl class="row">
+            <dt class="col-sm-3">Mã Phiếu</dt>
+            <dd class="col-sm-9">@Model.MaPhieuNhap</dd>
+
+            <dt class="col-sm-3">Ngày nhập</dt>
+            <dd class="col-sm-9">@Model.NgayNhap?.ToString("dd/MM/yyyy")</dd>
+
+            <dt class="col-sm-3">Nhân viên lập</dt>
+            <dd class="col-sm-9">@Model.MaNhanVienNavigation?.HoTen</dd>
+
+            <dt class="col-sm-3">Nhà cung cấp</dt>
+            <dd class="col-sm-9">@Model.MaNhaCungCapNavigation?.TenNcc</dd>
+
+            <dt class="col-sm-3">Tổng tiền</dt>
+            <dd class="col-sm-9">@Model.TongTien?.ToString("N0") VNĐ</dd>
+
+            <dt class="col-sm-3">Trạng thái</dt>
+            <dd class="col-sm-9">@Model.TrangThai</dd>
+        </dl>
+    </div>
+</div>
+
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary">Chi tiết Thuốc đã nhập</h6>
+    </div>
+    <div class="card-body">
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>Tên Thuốc</th>
+                    <th>Số lượng</th>
+                    <th>Đơn giá nhập</th>
+                    <th>Thành tiền</th>
+                    <th>Hạn sử dụng</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in chiTietList)
+                {
+                    <tr>
+                        <td>@item.MaThuocNavigation.TenThuoc</td>
+                        <td>@item.SoLuong</td>
+                        <td>@item.DonGiaNhap?.ToString("N0")</td>
+                        <td>@item.ThanhTien?.ToString("N0")</td>
+                        <td>@item.HanSuDung?.ToString("dd/MM/yyyy")</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+        <a asp-action="Index" class="btn btn-secondary mt-3">Quay lại danh sách</a>
+    </div>
+</div>

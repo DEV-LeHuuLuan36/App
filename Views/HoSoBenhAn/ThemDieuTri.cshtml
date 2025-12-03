@@ -1,0 +1,43 @@
+﻿@model App.Models.DieuTri
+
+@{
+    ViewData["Title"] = "Thêm Ghi chú Điều trị";
+}
+
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary">@ViewData["Title"]</h6>
+    </div>
+    <div class="card-body">
+        <form asp-action="ThemDieuTri">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" name="MaBenhNhan" value="@ViewBag.MaBenhNhan" />
+
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label asp-for="MaDieuTri" class="form-label"></label>
+                    <input asp-for="MaDieuTri" class="form-control" />
+                    <span asp-validation-for="MaDieuTri" class="text-danger"></span>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label asp-for="MaBacSi" class="form-label">Bác sĩ Ghi chú</label>
+                    <select asp-for="MaBacSi" class="form-control" asp-items="ViewBag.MaBacSi">
+                        <option value="">-- Chọn bác sĩ --</option>
+                    </select>
+                    <span asp-validation-for="MaBacSi" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="NoiDung" class="form-label">Nội dung Điều trị</label>
+                <textarea asp-for="NoiDung" class="form-control" rows="5"></textarea>
+                <span asp-validation-for="NoiDung" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <input type="submit" value="Thêm Ghi chú" class="btn btn-primary" />
+                <a asp-action="Index" asp-route-id="@ViewBag.MaBenhNhan" class="btn btn-secondary">Quay lại</a>
+            </div>
+        </form>
+    </div>
+</div>

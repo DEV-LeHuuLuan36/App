@@ -1,0 +1,104 @@
+﻿/* Thiết lập theme màu tối (dark) mặc định */
+:root {
+    --sidebar-width: 280px; /* Chiều rộng thanh menu */
+}
+
+/* 1. Thanh Menu (Sidebar) */
+.sidebar {
+    width: var(--sidebar-width);
+    height: 100vh; /* Cao 100% màn hình */
+    position: fixed; /* Cố định khi cuộn */
+    top: 0;
+    left: 0;
+    background-color: #212529; /* Màu nền tối (Bootstrap Dark) */
+    z-index: 100;
+    overflow-y: auto; /* Tự động cuộn nếu menu quá dài */
+}
+
+    /* Các mục menu */
+    .sidebar .nav-link {
+        font-size: 1.1rem;
+        padding: 0.75rem 1rem;
+        border-radius: 0.375rem; /* Bo góc */
+    }
+
+        /* Khi hover hoặc active */
+        .sidebar .nav-link:hover,
+        .sidebar .nav-link.active {
+            background-color: #495057; /* Màu xám đậm hơn */
+        }
+
+    /* Phân cách menu (NGHIỆP VỤ, QUẢN TRỊ) */
+    .sidebar .nav-divider {
+        padding: 1rem 1rem 0.5rem;
+        font-size: 0.8rem;
+        font-weight: 700;
+        color: #adb5bd; /* Màu xám nhạt */
+        text-transform: uppercase;
+    }
+
+    /* Menu con (Dropdown) */
+    .sidebar .collapse a {
+        color: #adb5bd;
+        text-decoration: none;
+        display: block;
+        padding: 0.5rem 1rem;
+        border-radius: 0.375rem;
+    }
+
+        .sidebar .collapse a:hover,
+        .sidebar .collapse a.active {
+            color: #fff;
+            background-color: #495057;
+        }
+
+    /* Thông tin user ở cuối */
+    .sidebar .user-info {
+        /* Đẩy xuống cuối */
+        margin-top: auto;
+    }
+
+
+/* 2. Nội dung chính (Main Content) */
+.main-content {
+    /* Đẩy nội dung sang phải bằng đúng chiều rộng của sidebar */
+    margin-left: var(--sidebar-width);
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    background-color: #f8f9fa; /* Màu nền nội dung (sáng) */
+}
+
+/* 3. Thanh Topbar */
+.topbar {
+    padding: 0.5rem 1.5rem;
+    z-index: 50;
+    /* Dùng màu nền sáng (tertiary) */
+}
+
+/* 4. Footer */
+.footer {
+    /* Đẩy footer xuống cuối */
+    margin-top: auto;
+}
+
+/* 5. Chuyển sang theme Sáng/Tối */
+[data-bs-theme="dark"] .main-content {
+    background-color: #343a40; /* Nền tối cho nội dung */
+}
+/* ... (Code CSS cũ của bạn) ... */
+
+/* Thêm CSS cho các link menu con */
+.sidebar .collapse a.sub-item {
+    color: #adb5bd;
+    text-decoration: none;
+    display: block;
+    padding: 0.5rem 1rem;
+    border-radius: 0.375rem;
+}
+
+    .sidebar .collapse a.sub-item:hover,
+    .sidebar .collapse a.sub-item.active {
+        color: #fff;
+        background-color: #495057;
+    }

@@ -1,0 +1,65 @@
+﻿@model List<App.ViewModels.BaoCaoDoanhThuResult>
+
+@{
+    ViewData["Title"] = "Báo cáo Doanh thu";
+}
+
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary">@ViewData["Title"]</h6>
+    </div>
+    <div class="card-body">
+        <form asp-action="BaoCaoDoanhThu" method="post">
+            <div class="row">
+                <div class="col-md-4 mb-3">
+                    <label>Từ ngày</label>
+                    <input type="date" name="tuNgay" class="form-control" required />
+                </div>
+                <div class="col-md-4 mb-3">
+                    <label>Đến ngày</label>
+                    <input type="date" name="denNgay" class="form-control" required />
+                </div>
+                <div class="col-md-4 mb-3 d-flex align-items-end">
+                    <button type="submit" class="btn btn-primary">Xem Báo cáo</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+@if (Model != null)
+{
+    <div class="card shadow mb-4">
+        <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold">
+                Kết quả từ @ViewData["TuNgay"] đến @ViewData["DenNgay"]
+                (Tổng cộng: @Model.Sum(h => h.TongTien).ToString("N0") VNĐ)
+            </h6>
+        </div>
+        <div class="card-body">
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>Mã Hóa đơn</th>
+                        <th>Bệnh nhân</th>
+                        <th>Ngày lập</th>
+                        <th>Trạng thái</th>
+                        <th>Tổng tiền</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>@item.MaHoaDon</td>
+                            <td>@item.HoTenBenhNhan</td>
+                            <td>@item.NgayLap.ToString("dd/MM/yyyy")</td>
+                            <td><span class="badge bg-success">@item.TrangThai</span></td>
+                            <td>@item.TongTien.ToString("N0")</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+}

@@ -1,0 +1,75 @@
+﻿@{
+    ViewData["Title"] = "Trung tâm Báo cáo";
+}
+
+@if (TempData["Success"] != null)
+{
+    <div class="alert alert-success">@TempData["Success"]</div>
+}
+@if (TempData["Error"] != null)
+{
+    <div class="alert alert-danger">@TempData["Error"]</div>
+}
+
+<div class="row">
+    <div class="col-md-6">
+        <div class="card shadow mb-4">
+            <div class="card-header py-3">
+                <h6 class="m-0 font-weight-bold text-primary">Báo cáo Doanh thu (Dùng SP)</h6>
+            </div>
+            <div class="card-body">
+                <p>Xem doanh thu đã thanh toán trong một khoảng thời gian.</p>
+                <a asp-action="BaoCaoDoanhThu" class="btn btn-primary">Xem Báo cáo</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-6">
+        <div class="card shadow mb-4">
+            <div class="card-header py-3">
+                <h6 class="m-0 font-weight-bold text-primary">Thống kê Bệnh (Dùng SP + Hàm)</h6>
+            </div>
+            <div class="card-body">
+                <p>Xem thống kê các loại bệnh theo khoa (sử dụng `fn_TinhTuoi`).</p>
+                <a asp-action="ThongKeBenhTheoKhoa" class="btn btn-primary">Xem Báo cáo</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-6">
+        <div class="card shadow mb-4">
+            <div class="card-header py-3">
+                <h6 class="m-0 font-weight-bold text-primary">Thuốc sắp hết hạn (Dùng View)</h6>
+            </div>
+            <div class_body">
+                <p>Xem danh sách thuốc sắp hết hạn (dùng `vw_ThuocSapHetHan`).</p>
+                <a asp-action="ThuocSapHetHan" class="btn btn-primary">Xem Báo cáo</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-6">
+        <div class="card shadow mb-4">
+            <div class="card-header py-3">
+                <h6 class_0 font-weight-bold text-warning">Bảo trì (Dùng Cursor)</h6>
+            </div>
+            <div class="card-body">
+                <p>Chạy SP `sp_CapNhatGiuongTrong_Cursor` để tính lại số giường trống.</p>
+                @if (User.IsInRole("Role_DevLead_DevOps") || User.IsInRole("Admin"))
+                {
+                    <form asp-action="RunCursorCapNhatGiuong" method="post">
+                        <button type="submit" class="btn btn-warning" onclick="return confirm('Hành động này có thể chậm, bạn chắc chắn muốn chạy?')">
+                            Chạy Cursor
+                        </button>
+                    </form>
+                }
+                else
+                {
+                    <p class="text-muted">(Chỉ Admin/DevLead mới được chạy.)</p>
+                }
+            </div>
+        </div>
+    </div>
+</div>

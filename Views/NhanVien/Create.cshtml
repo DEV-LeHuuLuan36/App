@@ -1,0 +1,113 @@
+﻿@model App.Models.NhanVien
+
+@{
+    ViewData["Title"] = "Thêm Nhân viên mới";
+}
+
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary">@ViewData["Title"]</h6>
+    </div>
+    <div class="card-body">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <div class="row">
+                <div class="col-md-4 mb-3">
+                    <label asp-for="MaNhanVien" class="form-label"></label>
+                    <input asp-for="MaNhanVien" class="form-control" />
+                    <span asp-validation-for="MaNhanVien" class="text-danger"></span>
+                </div>
+                <div class="col-md-8 mb-3">
+                    <label asp-for="HoTen" class="form-label"></label>
+                    <input asp-for="HoTen" class="form-control" />
+                    <span asp-validation-for="HoTen" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-4 mb-3">
+                    <label asp-for="NgaySinh" class="form-label"></label>
+                    <input asp-for="NgaySinh" class="form-control" type="date" />
+                    <span asp-validation-for="NgaySinh" class="text-danger"></span>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <label asp-for="GioiTinh" class="form-label"></label>
+                    <select asp-for="GioiTinh" class="form-control">
+                        <option value="Nam">Nam</option>
+                        <option value="Nữ">Nữ</option>
+                    </select>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <label asp-for="NgayVaoLam" class="form-label"></label>
+                    <input asp-for="NgayVaoLam" class="form-control" type="date" />
+                    <span asp-validation-for="NgayVaoLam" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label asp-for="SoDienThoai" class="form-label"></label>
+                    <input asp-for="SoDienThoai" class="form-control" />
+                    <span asp-validation-for="SoDienThoai" class="text-danger"></span>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label asp-for="Email" class="form-label"></label>
+                    <input asp-for="Email" class="form-control" type="email" />
+                    <span asp-validation-for="Email" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="col-md-6 mb-3">
+                <label asp-for="Cccd" class="form-label">Cccd</label>
+                <input asp-for="Cccd" class="form-control" />
+                <span asp-validation-for="Cccd" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="DiaChi" class="form-label"></label>
+                <input asp-for="DiaChi" class="form-control" />
+                <span asp-validation-for="DiaChi" class="text-danger"></span>
+            </div>
+
+            <hr />
+            <div class="row">
+                <div class="col-md-4 mb-3">
+                    <label asp-for="ChucVu" class="form-label"></label>
+                    <input asp-for="ChucVu" class="form-control" />
+                    <span asp-validation-for="ChucVu" class="text-danger"></span>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <label asp-for="TrinhDo" class="form-label"></label>
+                    <input asp-for="TrinhDo" class="form-control" />
+                    <span asp-validation-for="TrinhDo" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="LoaiNhanVien" class="form-label">Loại Nhân Viên</label>
+                    <select asp-for="LoaiNhanVien" class="form-control">
+                        <option value="">-- Chọn loại nhân viên --</option>
+                        <option value="Bác sĩ">Bác sĩ</option>
+                        <option value="Y tá">Y tá</option>
+                        <option value="Hành chính">Hành chính</option>
+                        <option value="Kỹ thuật">Kỹ thuật</option>
+                        <option value="Dược sĩ">Dược sĩ</option>
+                    </select>
+
+                    <span asp-validation-for="LoaiNhanVien" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="MaKhoa" class="form-label">Khoa (Nếu có)</label>
+                <select asp-for="MaKhoa" class="form-control" asp-items="ViewBag.MaKhoa">
+                    <option value="">-- Không thuộc khoa nào --</option>
+                </select>
+                <span asp-validation-for="MaKhoa" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <input type="submit" value="Tạo mới" class="btn btn-primary" />
+                <a asp-action="Index" class="btn btn-secondary">Quay lại</a>
+            </div>
+        </form>
+    </div>
+</div>

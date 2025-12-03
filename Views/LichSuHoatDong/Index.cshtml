@@ -1,0 +1,96 @@
+﻿@model IEnumerable<App.Models.LichSuHoatDong>
+
+@{
+    ViewData["Title"] = "Lịch sử Hoạt động Hệ thống";
+    var bangTacDongList = ViewData["BangTacDongList"] as List<string>;
+}
+
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary">@ViewData["Title"]</h6>
+        <p class="text-muted">Hiển thị 500 hoạt động gần nhất (được ghi lại bởi T-SQL Triggers)</p>
+
+        <form asp-action="Index" method="get" class="mt-3">
+            <div class="row">
+                <div class="col-md-4 mb-3">
+                    <label>Bảng Tác động</label>
+                    <select name="bangTacDong" class="form-control">
+                        <option value="">-- Tất cả Bảng --</option>
+                        @if (bangTacDongList != null)
+                        {
+                            @foreach (var bang in bangTacDongList)
+                            {
+                                <option value="@bang" selected="@(ViewData["BangTacDongFilter"]?.ToString() == bang)">@bang</option>
+                            }
+                        }
+                    </select>
+                </div>
+                <div class="col-md-3 mb-3">
+                    <label>Hành động</label>
+                    <select name="hanhDong" class="form-control">
+                        <option value="">-- Tất cả --</option>
+                        <option value="CẬP NHẬT" selected="@(ViewData["HanhDongFilter"]?.ToString() == "CẬP NHẬT")">Cập nhật</option>
+                        <option value="XÓA" selected="@(ViewData["HanhDongFilter"]?.ToString() == "XÓA")">Xóa</option>
+                        <option value="THÊM" selected="@(ViewData["HanhDongFilter"]?.ToString() == "THÊM")">Thêm</option>
+                    </select>
+                </div>
+                <div class="col-md-3 mb-3">
+                    <label>Ngày</label>
+                    <input type="date" name="tuNgay" class="form-control" value="@ViewData["TuNgayFilter"]" />
+                </div>
+                <div class="col-md-2 mb-3 d-flex align-items-end">
+                    <button type="submit" class="btn btn-info">Lọc</button>
+                    <a asp-action="Index" class="btn btn-secondary ms-2">Clear</a>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-bordered table-hover">
+                <thead class="table-light">
+                    <tr>
+                        <th>Thời gian</th>
+                        <th>Bảng Tác động</th>
+                        <th>Hành động</th>
+                        <th>Mã Bản ghi</th>
+                        <th>Người thực hiện (SQL)</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>@item.ThoiGian?.ToString("dd/MM/yyyy HH:mm:ss")</td>
+                            <td>@item.BangTacDong</td>
+                            <td>
+                                @if (item.HanhDong == "CẬP NHẬT")
+                                {
+                                    <span class="badge bg-warning text-dark">@item.HanhDong</span>
+                                }
+                                else if (item.HanhDong == "XÓA")
+                                {
+                                    <span class="badge bg-danger">@item.HanhDong</span>
+                                }
+                                else if (item.HanhDong == "LỖI TRIGGER")
+                                {
+                                    <span class="badge bg-danger">@item.HanhDong</span>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-success">@item.HanhDong</span>
+                                }
+                            </td>
+                            <td>@item.MaBanGhi</td>
+                            <td>@item.MaNhanVien</td>
+                            <td>
+                                <a asp-action="Details" asp-route-id="@item.MaLichSu" class="btn btn-info btn-sm">Chi tiết (JSON)</a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

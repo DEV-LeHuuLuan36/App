@@ -1,0 +1,28 @@
+﻿@model App.Models.DichVu
+
+@{
+    ViewData["Title"] = "Xác nhận Xóa (Ẩn) Dịch vụ";
+}
+
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-danger">@ViewData["Title"]</h6>
+    </div>
+    <div class="card-body">
+        <h3>Bạn có chắc muốn XÓA (Ẩn) dịch vụ này?</h3>
+        <p>Dịch vụ sẽ bị ẩn khỏi các danh sách chọn (Trạng thái = 0) nhưng vẫn giữ trong các hóa đơn cũ.</p>
+        <hr />
+        <dl class="row">
+            <dt class="col-sm-3">Mã Dịch vụ</dt>
+            <dd class="col-sm-9">@Model.MaDichVu</dd>
+            <dt class="col-sm-3">Tên Dịch vụ</dt>
+            <dd class="col-sm-9">@Model.TenDichVu</dd>
+        </dl>
+
+        <form asp-action="Delete">
+            <input type="hidden" asp-for="MaDichVu" />
+            <input type="submit" value="Xác nhận Xóa (Ẩn)" class="btn btn-danger" />
+            <a asp-action="Index" class="btn btn-secondary">Quay lại</a>
+        </form>
+    </div>
+</div>

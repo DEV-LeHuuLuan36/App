@@ -1,0 +1,30 @@
+﻿@model App.Models.ThietBi
+
+@{
+    ViewData["Title"] = "Xác nhận Xóa Thiết bị";
+}
+
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-danger">@ViewData["Title"]</h6>
+    </div>
+    <div class="card-body">
+        <h3>Bạn có chắc muốn XÓA thiết bị này?</h3>
+        <p class="text-danger">Cảnh báo: Hành động này không thể hoàn tác.</p>
+        <hr />
+        <dl class="row">
+            <dt class="col-sm-3">Mã Thiết bị</dt>
+            <dd class="col-sm-9">@Model.MaThietBi</dd>
+            <dt class="col-sm-3">Tên Thiết bị</dt>
+            <dd class="col-sm-9">@Model.TenThietBi</dd>
+            <dt class="col-sm-3">Phòng</dt>
+            <dd class="col-sm-9">@Model.MaPhongNavigation?.TenPhong</dd>
+        </dl>
+
+        <form asp-action="Delete">
+            <input type="hidden" asp-for="MaThietBi" />
+            <input type="submit" value="Xác nhận Xóa" class="btn btn-danger" />
+            <a asp-action="Index" class="btn btn-secondary">Quay lại</a>
+        </form>
+    </div>
+</div>

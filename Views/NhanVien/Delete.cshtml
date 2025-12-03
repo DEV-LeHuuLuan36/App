@@ -1,0 +1,30 @@
+﻿@model App.Models.NhanVien
+
+@{
+    ViewData["Title"] = "Xác nhận Nghỉ việc";
+}
+
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-danger">@ViewData["Title"]</h6>
+    </div>
+    <div class="card-body">
+        <h3>Bạn có chắc muốn cho nhân viên này nghỉ việc?</h3>
+        <p>Hành động này sẽ cập nhật `TrangThai = 0` (soft delete).</p>
+        <hr />
+        <dl class="row">
+            <dt class="col-sm-3">Mã Nhân viên</dt>
+            <dd class="col-sm-9">@Model.MaNhanVien</dd>
+            <dt class="col-sm-3">Họ tên</dt>
+            <dd class="col-sm-9">@Model.HoTen</dd>
+            <dt class="col-sm-3">Chức vụ</dt>
+            <dd class="col-sm-9">@Model.ChucVu</dd>
+        </dl>
+
+        <form asp-action="Delete">
+            <input type="hidden" asp-for="MaNhanVien" />
+            <input type="submit" value="Xác nhận Nghỉ việc" class="btn btn-danger" />
+            <a asp-action="Index" class="btn btn-secondary">Quay lại</a>
+        </form>
+    </div>
+</div>

@@ -1,0 +1,30 @@
+﻿@model App.Models.CaTruc
+
+@{
+    ViewData["Title"] = "Xác nhận Xóa Ca trực";
+}
+
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-danger">@ViewData["Title"]</h6>
+    </div>
+    <div class="card-body">
+        <h3>Bạn có chắc muốn XÓA ca trực này?</h3>
+        <p class="text-danger">Cảnh báo: Không thể xóa nếu ca này đang được sử dụng trong bảng Phân Ca.</p>
+        <hr />
+        <dl class="row">
+            <dt class="col-sm-3">Mã Ca</dt>
+            <dd class="col-sm-9">@Model.MaCa</dd>
+            <dt class="col-sm-3">Tên Ca</dt>
+            <dd class="col-sm-9">@Model.TenCa</dd>
+            <dt class="col-sm-3">Thời gian</dt>
+            <dd class="col-sm-9">@Model.GioBatDau - @Model.GioKetThuc</dd>
+        </dl>
+
+        <form asp-action="Delete">
+            <input type="hidden" asp-for="MaCa" />
+            <input type="submit" value="Xác nhận Xóa" class="btn btn-danger" />
+            <a asp-action="Index" class="btn btn-secondary">Quay lại</a>
+        </form>
+    </div>
+</div>

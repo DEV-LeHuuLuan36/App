@@ -1,0 +1,70 @@
+﻿@model IEnumerable<App.Models.ThietBi>
+
+@{
+    ViewData["Title"] = "Quản lý Thiết bị";
+}
+
+@if (TempData["Success"] != null)
+{
+    <div class="alert alert-success">@TempData["Success"]</div>
+}
+@if (TempData["Error"] != null)
+{
+    <div class="alert alert-danger">@TempData["Error"]</div>
+}
+
+<div class="card shadow mb-4">
+    <div class="card-header py-3 d-flex justify-content-between align-items-center">
+        <h6 class="m-0 font-weight-bold text-primary">@ViewData["Title"]</h6>
+        <a asp-action="Create" class="btn btn-primary">
+            <i class="fas fa-plus me-1"></i> Thêm thiết bị mới
+        </a>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>Tên Thiết bị</th>
+                        <th>Phòng</th>
+                        <th>Khoa</th>
+                        <th>Ngày mua</th>
+                        <th>Hạn bảo hành</th>
+                        <th>Tình trạng</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>@item.TenThietBi</td>
+                            <td>@item.MaPhongNavigation?.TenPhong</td>
+                            <td>@item.MaPhongNavigation?.MaKhoaNavigation?.TenKhoa</td>
+                            <td>@item.NgayMua?.ToString("dd/MM/yyyy")</td>
+                            <td>@item.HanBaoHanh?.ToString("dd/MM/yyyy")</td>
+                            <td>
+                                @if (item.TinhTrang == "Hoạt động")
+                                {
+                                    <span class="badge bg-success">@item.TinhTrang</span>
+                                }
+                                else if (item.TinhTrang == "Bảo trì")
+                                {
+                                    <span class="badge bg-warning text-dark">@item.TinhTrang</span>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-danger">@item.TinhTrang</span>
+                                }
+                            </td>
+                            <td>
+                                <a asp-action="Edit" asp-route-id="@item.MaThietBi" class="btn btn-warning btn-sm">Sửa</a>
+                                <a asp-action="Delete" asp-route-id="@item.MaThietBi" class="btn btn-danger btn-sm">Xóa</a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

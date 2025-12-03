@@ -1,0 +1,40 @@
+﻿@model App.Models.LichSuHoatDong
+
+@{
+    ViewData["Title"] = "Chi tiết Lịch sử Hoạt động";
+}
+
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary">@ViewData["Title"]</h6>
+    </div>
+    <div class="card-body">
+        <dl class="row">
+            <dt class="col-sm-3">Mã Lịch sử</dt>
+            <dd class="col-sm-9">@Model.MaLichSu</dd>
+            <dt class="col-sm-3">Bảng Tác động</dt>
+            <dd class="col-sm-9">@Model.BangTacDong</dd>
+            <dt class="col-sm-3">Mã Bản ghi</dt>
+            <dd class="col-sm-9">@Model.MaBanGhi</dd>
+            <dt class="col-sm-3">Hành động</dt>
+            <dd class="col-sm-9">@Model.HanhDong</dd>
+            <dt class="col-sm-3">Thời gian</dt>
+            <dd class="col-sm-9">@Model.ThoiGian?.ToString("dd/MM/yyyy HH:mm:ss")</dd>
+        </dl>
+
+        <hr />
+
+        <div class="row">
+            <div class="col-md-6">
+                <h5>Dữ liệu TRƯỚC (JSON)</h5>
+                <pre class="bg-light p-3 rounded"><code>@Model.NoiDungTruoc</code></pre>
+            </div>
+            <div class="col-md-6">
+                <h5>Dữ liệu SAU (JSON)</h5>
+                <pre class="bg-light p-3 rounded"><code>@Model.NoiDungSau</code></pre>
+            </div>
+        </div>
+
+        <a asp-action="Index" class="btn btn-secondary mt-3">Quay lại danh sách</a>
+    </div>
+</div>

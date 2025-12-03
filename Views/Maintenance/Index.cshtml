@@ -1,0 +1,30 @@
+﻿@{
+    ViewData["Title"] = "Bảo trì Hệ thống";
+}
+
+@if (TempData["Success"] != null)
+{
+    <div class="alert alert-success">@TempData["Success"]</div>
+}
+@if (TempData["Error"] != null)
+{
+    <div class="alert alert-danger">@TempData["Error"]</div>
+}
+
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-warning">Chức năng Bảo trì (Dùng Cursor)</h6>
+    </div>
+    <div class="card-body">
+        <p>
+            Chạy SP <strong>sp_CapNhatGiuongTrong_Cursor</strong> để tính toán lại số giường trống trong tất cả các phòng bệnh.
+            <br />Hành động này có thể tốn thời gian, chỉ chạy khi cần thiết.
+        </p>
+
+        <form asp-action="RunCursorCapNhatGiuong" method="post">
+            <button type="submit" class="btn btn-warning" onclick="return confirm('Hành động này có thể chậm, bạn chắc chắn muốn chạy?')">
+                <i class="fas fa-sync-alt"></i> Chạy Cursor Cập nhật Giường
+            </button>
+        </form>
+    </div>
+</div>

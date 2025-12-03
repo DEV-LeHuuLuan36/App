@@ -1,0 +1,34 @@
+﻿@model List<App.Models.VwThuocSapHetHan>
+
+@{
+    ViewData["Title"] = "Thuốc sắp hết hạn (Trong 3 tháng)";
+}
+
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-danger">@ViewData["Title"] (Dùng View)</h6>
+    </div>
+    <div class="card-body">
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>Tên Thuốc</th>
+                    <th>Số lượng tồn</th>
+                    <th>Hạn sử dụng</th>
+                    <th>Số ngày còn lại</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@item.TenThuoc</td>
+                        <td>@item.SoLuongTon</td>
+                        <td>@item.HanSuDung?.ToString("dd/MM/yyyy")</td>
+                        <td class="fw-bold text-danger">@item.SoNgayConLai</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

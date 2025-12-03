@@ -1,0 +1,58 @@
+﻿@model IEnumerable<App.Models.PhieuNhapThuoc>
+
+@{
+    ViewData["Title"] = "Quản lý Nhập thuốc";
+}
+
+@if (TempData["Success"] != null)
+{
+    <div class="alert alert-success">@TempData["Success"]</div>
+}
+@if (TempData["Error"] != null)
+{
+    <div class="alert alert-danger">@TempData["Error"]</div>
+}
+
+<div class="card shadow mb-4">
+    <div class="card-header py-3 d-flex justify-content-between align-items-center">
+        <h6 class="m-0 font-weight-bold text-primary">@ViewData["Title"]</h6>
+        <a asp-action="Create" class="btn btn-primary">
+            <i class="fas fa-plus me-1"></i> Lập Phiếu nhập mới
+        </a>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>Mã Phiếu</th>
+                        <th>Ngày nhập</th>
+                        <th>Nhân viên</th>
+                        <th>Nhà cung cấp</th>
+                        <th>Tổng tiền</th>
+                        <th>Trạng thái</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>@item.MaPhieuNhap</td>
+                            <td>@item.NgayNhap?.ToString("dd/MM/yyyy")</td>
+                            <td>@item.MaNhanVienNavigation?.HoTen</td>
+                            <td>@item.MaNhaCungCapNavigation?.TenNcc</td>
+                            <td>@item.TongTien?.ToString("N0")</td>
+                            <td>@item.TrangThai</td>
+                            <td>
+                                <a asp-action="Details" asp-route-id="@item.MaPhieuNhap" class="btn btn-info btn-sm">Chi tiết</a>
+                                
+                                
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

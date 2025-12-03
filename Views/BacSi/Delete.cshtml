@@ -1,0 +1,30 @@
+﻿@model App.Models.BacSi
+
+@{
+    ViewData["Title"] = "Xác nhận Xóa Bác sĩ";
+}
+
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-danger">@ViewData["Title"]</h6>
+    </div>
+    <div class="card-body">
+        <h3>Bạn có chắc muốn XÓA bác sĩ này?</h3>
+        <p class="text-danger">Cảnh báo: Không thể xóa nếu bác sĩ này đang phụ trách điều trị hoặc có lịch hẹn.</p>
+        <hr />
+        <dl class="row">
+            <dt class="col-sm-3">Mã Bác sĩ</dt>
+            <dd class="col-sm-9">@Model.MaBacSi</dd>
+            <dt class="col-sm-3">Tên Bác sĩ</dt>
+            <dd class="col-sm-9">@Model.TenBacSi</dd>
+            <dt class="col-sm-3">Khoa</dt>
+            <dd class="col-sm-9">@Model.MaKhoaNavigation.TenKhoa</dd>
+        </dl>
+
+        <form asp-action="Delete">
+            <input type="hidden" asp-for="MaBacSi" />
+            <input type="submit" value="Xác nhận Xóa" class="btn btn-danger" />
+            <a asp-action="Index" class="btn btn-secondary">Quay lại</a>
+        </form>
+    </div>
+</div>

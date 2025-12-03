@@ -1,0 +1,43 @@
+﻿@model App.ViewModels.ManageUserRolesViewModel
+
+@{
+    ViewData["Title"] = "Quản lý quyền cho: " + Model.UserName;
+}
+
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary">@ViewData["Title"]</h6>
+    </div>
+    <div class="card-body">
+        <form asp-action="Manage">
+            <input type="hidden" asp-for="UserId" />
+            <input type="hidden" asp-for="UserName" />
+
+            <div class_validation-summary-all text-danger"></div>
+
+            <div class="mb-3">
+                <label class="form-label">Chọn các quyền cho User này:</label>
+
+                @for (int i = 0; i < Model.RolesList.Count; i++)
+                {
+                    <div class="form-check">
+                        <input type="checkbox"
+                               name="SelectedRoles"
+                               value="@Model.RolesList[i].Value"
+                               class="form-check-input"
+                               id="role_@i"
+                               @(Model.RolesList[i].Selected ? "checked" : "") />
+
+                        <label class_check-label" for="role_@i">
+                            @Model.RolesList[i].Text
+                        </label>
+                    </div>
+                }
+            </div>
+
+            <hr />
+            <button type="submit" class="btn btn-primary">Lưu thay đổi</button>
+            <a asp-action="Index" class="btn btn-secondary">Quay lại</a>
+        </form>
+    </div>
+</div>

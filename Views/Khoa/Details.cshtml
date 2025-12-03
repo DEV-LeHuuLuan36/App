@@ -1,0 +1,43 @@
+﻿@model App.Models.Khoa
+
+@{
+    ViewData["Title"] = "Chi tiết Khoa";
+}
+
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary">@ViewData["Title"]</h6>
+    </div>
+    <div class="card-body">
+        <dl class="row">
+            <dt class="col-sm-3">Mã Khoa</dt>
+            <dd class="col-sm-9">@Html.DisplayFor(model => model.MaKhoa)</dd>
+            <dt class="col-sm-3">Tên Khoa</dt>
+            <dd class="col-sm-9">@Html.DisplayFor(model => model.TenKhoa)</dd>
+            <dt class="col-sm-3">Mô tả</dt>
+            <dd class="col-sm-9">@Html.DisplayFor(model => model.MoTa)</dd>
+            <dt class="col-sm-3">Trưởng khoa (Mã)</dt>
+            <dd class="col-sm-9">@Html.DisplayFor(model => model.TruongKhoa)</dd>
+            <dt class="col-sm-3">Ngày thành lập</dt>
+            <dd class="col-sm-9">@Model.NgayThanhLap?.ToString("dd/MM/yyyy")</dd>
+            <dt class="col-sm-3">Trạng thái</dt>
+            <dd class="col-sm-9">
+                @if (Model.TrangThai == true)
+                {
+                    <span class="badge bg-success">Hoạt động</span>
+                }
+                else
+                {
+                    <span class="badge bg-danger">Ngừng</span>
+                }
+            </dd>
+        </dl>
+    </div>
+    <div class="card-footer">
+        @if (User.IsInRole("Role_DevLead_DevOps") || User.IsInRole("Admin"))
+        {
+            <a asp-action="Edit" asp-route-id="@Model.MaKhoa" class="btn btn-warning">Sửa</a>
+        }
+        <a asp-action="Index" class="btn btn-secondary">Quay lại danh sách</a>
+    </div>
+</div>

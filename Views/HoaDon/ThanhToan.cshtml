@@ -1,0 +1,34 @@
+﻿@model App.Models.HoaDon
+
+@{
+    ViewData["Title"] = "Xác nhận Thanh toán Hóa đơn";
+}
+
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-success">@ViewData["Title"]</h6>
+    </div>
+    <div class="card-body">
+        <h3>Hóa đơn: @Model.MaHoaDon</h3>
+        <h5>Bệnh nhân: @Model.MaBenhNhanNavigation.HoTenBenhNhan</h5>
+        <h4 class="text-danger fw-bold">Tổng tiền: @Model.TongTien.Value.ToString("N0") VNĐ</h4>
+        <hr />
+
+        <form asp-action="ThanhToan">
+            <input type="hidden" asp-for="MaHoaDon" />
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <div class="mb-3 col-md-6">
+                <label for="PhuongThucTT" class="form-label fw-bold">Chọn Phương thức Thanh toán</label>
+                <select name="PhuongThucTT" class="form-control">
+                    <option value="Tiền mặt">Tiền mặt</option>
+                    <option value="Chuyển khoản">Chuyển khoản</option>
+                    <option value="Thẻ tín dụng">Thẻ tín dụng</option>
+                </select>
+            </div>
+
+            <input type="submit" value="Xác nhận Đã thanh toán" class="btn btn-success btn-lg" />
+            <a asp-action="Details" asp-route-id="@Model.MaHoaDon" class="btn btn-secondary">Quay lại</a>
+        </form>
+    </div>
+</div>

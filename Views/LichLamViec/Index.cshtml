@@ -1,0 +1,81 @@
+﻿@model IEnumerable<App.Models.LichLamViec>
+
+@{
+    ViewData["Title"] = "Quản lý Lịch làm việc";
+}
+
+@if (TempData["Success"] != null)
+{
+    <div class="alert alert-success">@TempData["Success"]</div>
+}
+@if (TempData["Error"] != null)
+{
+    <div class="alert alert-danger">@TempData["Error"]</div>
+}
+
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary">@ViewData["Title"]</h6>
+
+        <form asp-action="Index" method="get" class="mt-3">
+            <div class="row">
+                <div class="col-md-3 mb-3">
+                    <label>Nhân viên</label>
+                    <select name="maNhanVien" class="form-control" asp-items="ViewBag.MaNhanVien">
+                        <option value="">-- Tất cả --</option>
+                    </select>
+                </div>
+                <div class="col-md-3 mb-3">
+                    <label>Từ ngày</label>
+                    <input type="date" name="tuNgay" class="form-control" value="@ViewData["TuNgay"]" />
+                </div>
+                <div class="col-md-3 mb-3">
+                    <label>Đến ngày</label>
+                    <input type="date" name="denNgay" class="form-control" value="@ViewData["DenNgay"]" />
+                </div>
+                <div class="col-md-3 mb-3 d-flex align-items-end">
+                    <button type="submit" class="btn btn-info">Tìm</button>
+                    <a asp-action="Index" class="btn btn-secondary ms-2">Clear</a>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="card-body">
+        <div class="d-flex justify-content-end mb-3">
+            <a asp-action="Create" class="btn btn-primary">
+                <i class="fas fa-plus me-1"></i> Xếp lịch mới
+            </a>
+        </div>
+        <div class="table-responsive">
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>Nhân viên</th>
+                        <th>Loại NV (CSDL)</th>
+                        <th>Ngày làm</th>
+                        <th>Ca làm</th>
+                        <th>Trạng thái</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>@item.MaNhanVienNavigation?.HoTen</td>
+                            <td>@item.LoaiNhanVien</td>
+                            <td>@item.NgayLamViec?.ToString("dd/MM/yyyy")</td>
+                            <td>@item.CaLamViec</td>
+                            <td>@item.TrangThai</td>
+                            <td>
+                                <!-- SỬA LỖI 404 (CHAR(10)): Dùng .Trim() -->
+                                <a asp-action="Edit" asp-route-id="@item.MaLich.Trim()" class="btn btn-warning btn-sm">Sửa</a>
+                                <a asp-action="Delete" asp-route-id="@item.MaLich.Trim()" class="btn btn-danger btn-sm">Xóa</a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

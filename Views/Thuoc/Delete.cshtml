@@ -1,0 +1,30 @@
+﻿@model App.Models.Thuoc
+
+@{
+    ViewData["Title"] = "Xác nhận Xóa Thuốc";
+}
+
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-danger">@ViewData["Title"]</h6>
+    </div>
+    <div class="card-body">
+        <h3>Bạn có chắc muốn XÓA thuốc này?</h3>
+        <p class="text-danger">Cảnh báo: Không thể xóa nếu thuốc này đã được kê đơn.</p>
+        <hr />
+        <dl class="row">
+            <dt class="col-sm-3">Mã Thuốc</dt>
+            <dd class="col-sm-9">@Model.MaThuoc</dd>
+            <dt class="col-sm-3">Tên Thuốc</dt>
+            <dd class="col-sm-9">@Model.TenThuoc</dd>
+            <dt class="col-sm-3">Tồn kho</dt>
+            <dd class="col-sm-9">@Model.SoLuongTon</dd>
+        </dl>
+
+        <form asp-action="Delete">
+            <input type="hidden" asp-for="MaThuoc" />
+            <input type="submit" value="Xác nhận Xóa" class="btn btn-danger" />
+            <a asp-action="Index" class="btn btn-secondary">Quay lại</a>
+        </form>
+    </div>
+</div>

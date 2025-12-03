@@ -1,0 +1,43 @@
+﻿@model App.Models.LichHen
+
+@{
+    ViewData["Title"] = "Xác nhận Lịch hẹn";
+}
+
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary">@ViewData["Title"]</h6>
+    </div>
+    <div class="card-body">
+        <h3>Bạn muốn xác nhận lịch hẹn này?</h3>
+        <div>
+            <h4>Lịch hẹn: @Model.MaLichHen</h4>
+            <hr />
+            <dl class="row">
+                <dt class="col-sm-3">Bệnh nhân</dt>
+                <dd class="col-sm-9">@Model.MaBenhNhanNavigation.HoTenBenhNhan</dd>
+
+                <dt class="col-sm-3">Ngày hẹn</dt>
+                <dd class="col-sm-9">@Model.NgayHen</dd>
+
+                <dt class="col-sm-3">Lý do</dt>
+                <dd class="col-sm-9">@Model.LyDoKham</dd>
+            </dl>
+
+            <form asp-action="XacNhan">
+                <input type="hidden" asp-for="MaLichHen" />
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                <div class="mb-3 col-md-6">
+                    <label for="MaBacSi" class="form-label fw-bold">Chỉ định Bác sĩ (Bắt buộc)</label>
+                    <select name="MaBacSi" class="form-control" asp-items="ViewBag.MaBacSi">
+                        <option value="">-- Chọn Bác sĩ --</option>
+                    </select>
+                </div>
+
+                <input type="submit" value="Xác nhận" class="btn btn-success" />
+                <a asp-action="Index" class="btn btn-secondary">Quay lại</a>
+            </form>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,90 @@
+﻿@model App.Models.NhanVien
+
+@{
+    ViewData["Title"] = "Cập nhật Nhân viên";
+}
+
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary">@ViewData["Title"]</h6>
+    </div>
+    <div class="card-body">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="MaNhanVien" />
+
+            <div class="mb-3">
+                <label asp-for="HoTen" class="form-label"></label>
+                <input asp-for="HoTen" class="form-control" />
+                <span asp-validation-for="HoTen" class="text-danger"></span>
+            </div>
+
+            <div class="row">
+                <div class="col-md-4 mb-3">
+                    <label asp-for="NgaySinh" class="form-label"></label>
+                    <input asp-for="NgaySinh" class="form-control" type="date" />
+                    <span asp-validation-for="NgaySinh" class="text-danger"></span>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <label asp-for="GioiTinh" class="form-label"></label>
+                    <select asp-for="GioiTinh" class="form-control">
+                        <option value="Nam">Nam</option>
+                        <option value="Nữ">Nữ</option>
+                    </select>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <label asp-for="NgayVaoLam" class="form-label"></label>
+                    <input asp-for="NgayVaoLam" class="form-control" type="date" readonly />
+                </div>
+            </div>
+
+            <hr />
+            <div class="row">
+                <div class="col-md-4 mb-3">
+                    <label asp-for="ChucVu" class="form-label"></label>
+                    <input asp-for="ChucVu" class="form-control" />
+                    <span asp-validation-for="ChucVu" class="text-danger"></span>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <label asp-for="TrinhDo" class="form-label"></label>
+                    <input asp-for="TrinhDo" class="form-control" />
+                    <span asp-validation-for="TrinhDo" class="text-danger"></span>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <label asp-for="LoaiNhanVien" class="form-label"></label>
+                    <select asp-for="LoaiNhanVien" class="form-control">
+                        <option value="Hành chính">Hành chính</option>
+                        <option value="Kỹ thuật">Kỹ thuật</option>
+                        <option value="Dược sĩ">Dược sĩ</option>
+                    </select>
+                </div>
+            </div>
+            <div class="col-md-6 mb-3">
+                <label asp-for="Cccd" class="form-label">Cccd</label>
+                <input asp-for="Cccd" class="form-control" />
+                <span asp-validation-for="Cccd" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="MaKhoa" class="form-label">Khoa (Nếu có)</label>
+                <select asp-for="MaKhoa" class="form-control" asp-items="ViewBag.MaKhoa">
+                    <option value="">-- Không thuộc khoa nào --</option>
+                </select>
+                <span asp-validation-for="MaKhoa" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="TrangThai" class="form-label">Trạng thái</label>
+                <select asp-for="TrangThai" class="form-control">
+                    <option value="true">Đang làm việc</option>
+                    <option value="false">Đã nghỉ</option>
+                </select>
+                <span asp-validation-for="TrangThai" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <input type="submit" value="Lưu thay đổi" class="btn btn-primary" />
+                <a asp-action="Index" class="btn btn-secondary">Quay lại</a>
+            </div>
+        </form>
+    </div>
+</div>

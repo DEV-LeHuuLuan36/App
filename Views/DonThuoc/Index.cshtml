@@ -1,0 +1,71 @@
+﻿@model App.ViewModels.DonThuocViewModel
+
+@{
+    ViewData["Title"] = "Đơn thuốc cho Lần điều trị: " + Model.DieuTri.MaDieuTri;
+}
+
+@if (TempData["Success"] != null)
+{
+    <div class="alert alert-success">@TempData["Success"]</div>
+}
+
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary">Thông tin Điều trị</h6>
+    </div>
+    <div class="card-body">
+        <dl class="row">
+            <dt class="col-sm-3">Bệnh nhân</dt>
+            <dd class="col-sm-9">@Model.DieuTri.MaBenhNhanNavigation.HoTenBenhNhan</dd>
+            <dt class="col-sm-3">Bác sĩ</dt>
+            <dd class="col-sm-9">@Model.DieuTri.MaBacSiNavigation.TenBacSi</dd>
+            <dt class="col-sm-3">Ngày điều trị</dt>
+            <dd class="col-sm-9">@Model.DieuTri.NgayDieuTri.Value.ToString("dd/MM/yyyy")</dd>
+            <dt class="col-sm-3">Nội dung</dt>
+            <dd class="col-sm-9">@Model.DieuTri.NoiDung</dd>
+        </dl>
+    </div>
+</div>
+
+<div class="card shadow mb-4">
+    <div class="card-header py-3 d-flex justify-content-between align-items-center">
+        <h6 class="m-0 font-weight-bold text-success">Đơn thuốc Chi tiết</h6>
+        <a asp-action="Create" asp-route-id="@Model.DieuTri.MaDieuTri" class="btn btn-success btn-sm">
+            <i class="fas fa-plus"></i> Kê thêm thuốc
+        </a>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>Tên thuốc</th>
+                        <th>Số lượng</th>
+                        <th>Cách dùng</th>
+                        <th>Ngày kê</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var donThuoc in Model.DanhSachDonThuoc)
+                    {
+                        <tr>
+                            <td>@donThuoc.MaThuocNavigation.TenThuoc</td>
+                            <td>@donThuoc.SoLuong</td>
+                            <td>@donThuoc.CachDung</td>
+                            <td>@donThuoc.NgayKeDon.Value.ToString("dd/MM/yyyy")</td>
+                        </tr>
+                    }
+                    @if (!Model.DanhSachDonThuoc.Any())
+                    {
+                        <tr>
+                            <td colspan="4" class="text-center">Chưa kê đơn thuốc.</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+        <a asp-controller="HoSoBenhAn" asp-action="Index" asp-route-id="@Model.DieuTri.MaBenhNhan" class="btn btn-secondary mt-3">
+            Quay lại Bệnh án
+        </a>
+    </div>
+</div>

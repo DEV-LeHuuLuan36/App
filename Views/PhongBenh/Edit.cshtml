@@ -1,0 +1,60 @@
+﻿@model App.Models.PhongBenh
+
+@{
+    ViewData["Title"] = "Cập nhật Phòng bệnh";
+}
+
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary">@ViewData["Title"]</h6>
+    </div>
+    <div class="card-body">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="MaPhong" />
+
+            <div class="mb-3">
+                <label asp-for="TenPhong" class="form-label"></label>
+                <input asp-for="TenPhong" class="form-control" />
+                <span asp-validation-for="TenPhong" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="MaKhoa" class="form-label">Khoa</label>
+                <select asp-for="MaKhoa" class="form-control" asp-items="ViewBag.MaKhoa"></select>
+                <span asp-validation-for="MaKhoa" class="text-danger"></span>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label asp-for="LoaiPhong" class="form-label">Loại Phòng</label>
+                    <select asp-for="LoaiPhong" class="form-control">
+                        <option value="Thường">Thường</option>
+                        <option value="VIP">VIP</option>
+                        <option value="Cấp cứu">Cấp cứu</option>
+                    </select>
+                    <span asp-validation-for="LoaiPhong" class="text-danger"></span>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label asp-for="SoGiuong" class="form-label"></label>
+                    <input asp-for="SoGiuong" class="form-control" type="number" min="0" />
+                    <span asp-validation-for="SoGiuong" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="TrangThai" class="form-label">Trạng thái</label>
+                <select asp-for="TrangThai" class="form-control">
+                    <option value="true">Hoạt động</option>
+                    <option value="false">Đã ẩn (Ngừng)</option>
+                </select>
+                <span asp-validation-for="TrangThai" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <input type="submit" value="Lưu thay đổi" class="btn btn-primary" />
+                <a asp-action="Index" class="btn btn-secondary">Quay lại</a>
+            </div>
+        </form>
+    </div>
+</div>

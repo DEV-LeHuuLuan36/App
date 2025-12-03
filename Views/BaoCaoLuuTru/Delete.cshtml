@@ -1,0 +1,27 @@
+﻿@model App.Models.BaoCao
+
+@{
+    ViewData["Title"] = "Xác nhận Xóa Báo cáo";
+}
+
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-danger">@ViewData["Title"]</h6>
+    </div>
+    <div class="card-body">
+        <h3>Bạn có chắc muốn XÓA vĩnh viễn báo cáo này?</h3>
+        <hr />
+        <dl class="row">
+            <dt class="col-sm-3">Mã Báo cáo</dt>
+            <dd class="col-sm-9">@Model.MaBaoCao</dd>
+            <dt class="col-sm-3">Loại Báo cáo</dt>
+            <dd class="col-sm-9">@Model.LoaiBaoCao</dd>
+        </dl>
+
+        <form asp-action="Delete">
+            <input type="hidden" asp-for="MaBaoCao" />
+            <input type="submit" value="Xác nhận Xóa" class="btn btn-danger" />
+            <a asp-action="Index" class="btn btn-secondary">Quay lại</a>
+        </form>
+    </div>
+</div>

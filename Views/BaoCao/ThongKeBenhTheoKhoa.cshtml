@@ -1,0 +1,55 @@
+﻿@model List<App.ViewModels.ThongKeBenhResult>
+
+@{
+    ViewData["Title"] = "Thống kê Bệnh theo Khoa";
+}
+
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary">@ViewData["Title"]</h6>
+    </div>
+    <div class_body">
+        <form asp-action="ThongKeBenhTheoKhoa" method="get">
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label>Chọn Khoa (để trống = tất cả)</label>
+                    <select name="maKhoa" class="form-control" asp-items="ViewBag.MaKhoaList" data-selected="@ViewData["MaKhoaChon"]">
+                        <option value="">-- Tất cả các khoa --</option>
+                    </select>
+                </div>
+                <div class="col-md-6 mb-3 d-flex align-items-end">
+                    <button type="submit" class="btn btn-primary">Lọc</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+@if (Model != null)
+{
+    <div class="card shadow mb-4">
+        <div class="card-body">
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>Tên Khoa</th>
+                        <th>Chuẩn đoán</th>
+                        <th>Số lượng ca</th>
+                        <th>Tuổi trung bình</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>@item.TenKhoa</td>
+                            <td>@item.ChuanDoan</td>
+                            <td>@item.SoLuong</td>
+                            <td>@item.TuoiTrungBinh</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+}

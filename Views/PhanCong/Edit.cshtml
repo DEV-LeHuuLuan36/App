@@ -1,0 +1,61 @@
+﻿@model App.Models.PhanCong
+
+@{
+    ViewData["Title"] = "Cập nhật Phân công";
+}
+
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary">@ViewData["Title"]</h6>
+    </div>
+    <div class="card-body">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="MaPhanCong" />
+
+            <div class="mb-3">
+                <label asp-for="MaPhong" class="form-label">Phòng bệnh</label>
+                <select asp-for="MaPhong" class="form-control" asp-items="ViewBag.MaPhong"></select>
+                <span asp-validation-for="MaPhong" class="text-danger"></span>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label asp-for="MaBacSi" class="form-label">Bác sĩ phụ trách</label>
+                    <select asp-for="MaBacSi" class="form-control" asp-items="ViewBag.MaBacSi"></select>
+                    <span asp-validation-for="MaBacSi" class="text-danger"></span>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label asp-for="MaYta" class="form-label">Y tá phụ trách</label>
+                    <select asp-for="MaYta" class="form-control" asp-items="ViewBag.MaYTa"></select>
+                    <span asp-validation-for="MaYta" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="NgayPhanCong" class="form-label"></label>
+                <input asp-for="NgayPhanCong" class="form-control" type="date" />
+                <span asp-validation-for="NgayPhanCong" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="TrangThai" class="form-label"></label>
+                <select asp-for="TrangThai" class="form-control">
+                    <option value="Đang làm">Đang làm</option>
+                    <option value="Đã kết thúc">Đã kết thúc</option>
+                    <option value="Hủy">Hủy</option>
+                </select>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="GhiChu" class="form-label"></label>
+                <textarea asp-for="GhiChu" class="form-control"></textarea>
+            </div>
+
+            <div class="mb-3">
+                <input type="submit" value="Lưu thay đổi" class="btn btn-primary" />
+                <a asp-action="Index" class="btn btn-secondary">Quay lại</a>
+            </div>
+        </form>
+    </div>
+</div>

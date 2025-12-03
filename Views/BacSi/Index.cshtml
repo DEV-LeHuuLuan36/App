@@ -1,0 +1,87 @@
+﻿@model IEnumerable<App.Models.BacSi>
+
+@{
+    ViewData["Title"] = "Danh sách Bác Sĩ (Chỉ xem)";
+}
+
+<!-- (LƯU Ý: Trang này chỉ để xem. Thêm/Sửa Bác sĩ PHẢI LÀM từ trang Nhân Viên) -->
+@if (TempData["Success"] != null)
+{
+    <div class="alert alert-success">@TempData["Success"]</div>
+}
+@if (TempData["Error"] != null)
+{
+    <div class="alert alert-danger">@TempData["Error"]</div>
+}
+
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary">@ViewData["Title"]</h6>
+        <a asp-controller="NhanVien" asp-action="Create" class="btn btn-primary btn-sm float-right" style="margin-top: -25px;">
+            <i class="fas fa-plus"></i> Thêm Bác Sĩ Mới (Qua trang Nhân Viên)
+        </a>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th>Họ Tên Bác Sĩ</th>
+                        <th>Chuyên Khoa</th>
+                        <th>Khoa</th>
+                        <th>Số Điện Thoại</th>
+                        <th>Trạng Thái</th>
+                        <th style="width: 150px;">Hành Động</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>@Html.DisplayFor(modelItem => item.TenBacSi)</td>
+                            <td>@Html.DisplayFor(modelItem => item.ChuyenKhoa)</td>
+                            <td>@Html.DisplayFor(modelItem => item.MaKhoaNavigation.TenKhoa)</td>
+                            <td>@Html.DisplayFor(modelItem => item.SoDienThoai)</td>
+                            <td>
+                                @if (item.TrangThai == true)
+                                {
+                                    <span class="badge badge-success">Đang làm việc</span>
+                                }
+                                else
+                                {
+                                    <span class="badge badge-danger">Đã nghỉ</span>
+                                }
+                            </td>
+                            <td>
+                                <!--
+                                    SỬA LỖI 404 (CHAR(10)): Dùng .Trim()
+                                -->
+                                <a asp-action="Edit" asp-route-id="@item.MaBacSi.Trim()" class="btn btn-warning btn-sm" title="Sửa (Đồng bộ 2 bảng)">
+                                    <i class="fas fa-edit"></i>
+                                </a>
+
+                                <!-- SỬA LỖI 404 (CHAR(10)): Dùng .Trim() -->
+                                <form asp-action="ToggleStatus" asp-route-id="@item.MaBacSi.Trim()" method="post" style="display:inline;">
+                                    @Html.AntiForgeryToken()
+                                    <input type="hidden" name="id" value="@item.MaBacSi.Trim()" />
+                                    @if (item.TrangThai == true)
+                                    {
+                                        <button type="submit" class="btn btn-danger btn-sm" title="Vô hiệu hóa (Đồng bộ)">
+                                            <i class="fas fa-user-minus"></i>
+                                        </button>
+                                    }
+                                    else
+                                    {
+                                        <button type="submit" class="btn btn-success btn-sm" title="Kích hoạt lại (Đồng bộ)">
+                                            <i class="fas fa-user-plus"></i>
+                                        </button>
+                                    }
+                                </form>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,57 @@
+﻿@model App.Models.HoSoBenhAn
+
+@{
+    ViewData["Title"] = "Tạo Hồ sơ Bệnh án";
+}
+
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary">@ViewData["Title"]</h6>
+    </div>
+    <div class="card-body">
+        <form asp-action="TaoHoSo">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" name="MaBenhNhan" value="@ViewBag.MaBenhNhan" />
+
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label asp-for="MaHs" class="form-label"></label>
+                    <input asp-for="MaHs" class="form-control" />
+                    <span asp-validation-for="MaHs" class="text-danger"></span>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label asp-for="MaBacSi" class="form-label">Bác sĩ Lập</label>
+                    <select asp-for="MaBacSi" class="form-control" asp-items="ViewBag.MaBacSi">
+                        <option value="">-- Chọn bác sĩ --</option>
+                    </select>
+                    <span asp-validation-for="MaBacSi" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="mb-3">
+                <label asp-for="ChuanDoan" class="form-label"></label>
+                <input asp-for="ChuanDoan" class="form-control" />
+                <span asp-validation-for="ChuanDoan" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="TinhTrang" class="form-label"></label>
+                <input asp-for="TinhTrang" class="form-control" />
+                <span asp-validation-for="TinhTrang" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="TrieuChung" class="form-label"></label>
+                <textarea asp-for="TrieuChung" class="form-control"></textarea>
+                <span asp-validation-for="TrieuChung" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="TienSuBenh" class="form-label"></label>
+                <textarea asp-for="TienSuBenh" class="form-control"></textarea>
+                <span asp-validation-for="TienSuBenh" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <input type="submit" value="Tạo Bệnh án" class="btn btn-primary" />
+                <a asp-action="Index" asp-route-id="@ViewBag.MaBenhNhan" class="btn btn-secondary">Quay lại</a>
+            </div>
+        </form>
+    </div>
+</div>

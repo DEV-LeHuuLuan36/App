@@ -1,0 +1,30 @@
+﻿@model App.Models.PhanCong
+
+@{
+    ViewData["Title"] = "Xác nhận Hủy Phân công";
+}
+
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-danger">@ViewData["Title"]</h6>
+    </div>
+    <div class="card-body">
+        <h3>Bạn có chắc muốn HỦY phân công này?</h3>
+        <p>Hành động này sẽ cập nhật `TrangThai = 'Hủy'`.</p>
+        <hr />
+        <dl class="row">
+            <dt class="col-sm-3">Phòng</dt>
+            <dd class="col-sm-9">@Model.MaPhongNavigation?.TenPhong</dd>
+            <dt class="col-sm-3">Bác sĩ</dt>
+            <dd class="col-sm-9">@Model.MaBacSiNavigation?.TenBacSi</dd>
+            <dt class="col-sm-3">Y tá</dt>
+            <dd class="col-sm-9">@Model.MaYtaNavigation?.TenYTa</dd>
+        </dl>
+
+        <form asp-action="Cancel">
+            <input type="hidden" asp-for="MaPhanCong" />
+            <input type="submit" value="Xác nhận Hủy" class="btn btn-danger" />
+            <a asp-action="Index" class="btn btn-secondary">Quay lại</a>
+        </form>
+    </div>
+</div>

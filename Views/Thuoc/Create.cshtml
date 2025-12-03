@@ -1,0 +1,63 @@
+﻿@model App.Models.Thuoc
+
+@{
+    ViewData["Title"] = "Thêm Thuốc mới";
+}
+
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary">@ViewData["Title"]</h6>
+    </div>
+    <div class="card-body">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <div class="row">
+                <div class="col-md-4 mb-3">
+                    <label asp-for="MaThuoc" class="form-label"></label>
+                    <input asp-for="MaThuoc" class="form-control" />
+                    <span asp-validation-for="MaThuoc" class="text-danger"></span>
+                </div>
+                <div class="col-md-8 mb-3">
+                    <label asp-for="TenThuoc" class="form-label"></label>
+                    <input asp-for="TenThuoc" class="form-control" />
+                    <span asp-validation-for="TenThuoc" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-3 mb-3">
+                    <label asp-for="DonViTinh" class="form-label"></label>
+                    <input asp-for="DonViTinh" class="form-control" />
+                    <span asp-validation-for="DonViTinh" class="text-danger"></span>
+                </div>
+                <div class="col-md-3 mb-3">
+                    <label asp-for="DonGia" class="form-label"></label>
+                    <input asp-for="DonGia" class="form-control" type="number" />
+                    <span asp-validation-for="DonGia" class="text-danger"></span>
+                </div>
+                <div class="col-md-3 mb-3">
+                    <label asp-for="SoLuongTon" class="form-label"></label>
+                    <input asp-for="SoLuongTon" class="form-control" type="number" />
+                    <span asp-validation-for="SoLuongTon" class="text-danger"></span>
+                </div>
+                <div class="col-md-3 mb-3">
+                    <label asp-for="HanSuDung" class="form-label"></label>
+                    <input asp-for="HanSuDung" class="form-control" type="date" />
+                    <span asp-validation-for="HanSuDung" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="ChongChiDinh" class="form-label"></label>
+                <textarea asp-for="ChongChiDinh" class="form-control"></textarea>
+                <span asp-validation-for="ChongChiDinh" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <input type="submit" value="Tạo mới" class="btn btn-primary" />
+                <a asp-action="Index" class="btn btn-secondary">Quay lại</a>
+            </div>
+        </form>
+    </div>
+</div>

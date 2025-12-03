@@ -1,0 +1,29 @@
+﻿@model App.Models.LichLamViec
+
+@{
+    ViewData["Title"] = "Xác nhận Xóa Lịch làm việc";
+}
+
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-danger">@ViewData["Title"]</h6>
+    </div>
+    <div class="card-body">
+        <h3>Bạn có chắc muốn XÓA lịch làm việc này?</h3>
+        <hr />
+        <dl class="row">
+            <dt class="col-sm-3">Nhân viên</dt>
+            <dd class="col-sm-9">@Model.MaNhanVienNavigation?.HoTen</dd>
+            <dt class="col-sm-3">Ngày làm</dt>
+            <dd class="col-sm-9">@Model.NgayLamViec?.ToString("dd/MM/yyyy")</dd>
+            <dt class="col-sm-3">Ca</dt>
+            <dd class="col-sm-9">@Model.CaLamViec</dd>
+        </dl>
+
+        <form asp-action="Delete">
+            <input type="hidden" asp-for="MaLich" />
+            <input type="submit" value="Xác nhận Xóa" class="btn btn-danger" />
+            <a asp-action="Index" class="btn btn-secondary">Quay lại</a>
+        </form>
+    </div>
+</div>

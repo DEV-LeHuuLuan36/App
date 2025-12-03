@@ -1,0 +1,55 @@
+﻿@model List<App.ViewModels.UserRolesViewModel>
+
+@{
+    ViewData["Title"] = "Quản lý Phân quyền";
+}
+
+@if (TempData["Success"] != null)
+{
+    <div class="alert alert-success">@TempData["Success"]</div>
+}
+
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary">@ViewData["Title"]</h6>
+    </div>
+    <div class="card-body">
+        <div class_responsive">
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>Email / Tên đăng nhập</th>
+                        <th>Các Quyền (Roles)</th>
+                        <th>Hành động</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var user in Model)
+                    {
+                        <tr>
+                            <td>@user.Email</td>
+                            <td>
+                                @if (user.Roles.Any())
+                                {
+                                    @foreach (var role in user.Roles)
+                                    {
+                                        <span class="badge bg-primary me-1">@role</span>
+                                    }
+                                }
+                                else
+                                {
+                                    <span class="badge bg-danger">Không có quyền</span>
+                                }
+                            </td>
+                            <td>
+                                <a asp-action="Manage" asp-route-userId="@user.UserId" class="btn btn-warning btn-sm">
+                                    <i class="fas fa-edit"></i> Quản lý quyền
+                                </a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

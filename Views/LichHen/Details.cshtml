@@ -1,0 +1,39 @@
+﻿@model App.Models.LichHen
+
+@{
+    ViewData["Title"] = "Chi tiết Lịch hẹn";
+}
+
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary">@ViewData["Title"]</h6>
+    </div>
+    <div class="card-body">
+        <dl class="row">
+            <dt class="col-sm-3">Mã lịch hẹn</dt>
+            <dd class="col-sm-9">@Html.DisplayFor(model => model.MaLichHen)</dd>
+
+            <dt class="col-sm-3">Bệnh nhân</dt>
+            <dd class="col-sm-9">@Html.DisplayFor(model => model.MaBenhNhanNavigation.HoTenBenhNhan)</dd>
+
+            <dt class="col-sm-3">Khoa</dt>
+            <dd class="col-sm-9">@Html.DisplayFor(model => model.MaKhoaNavigation.TenKhoa)</dd>
+
+            <dt class="col-sm-3">Bác sĩ</dt>
+            <dd class="col-sm-9">@Html.DisplayFor(model => model.MaBacSiNavigation.TenBacSi)</dd>
+
+            <dt class="col-sm-3">Ngày hẹn</dt>
+            <dd class="col-sm-9">@Html.DisplayFor(model => model.NgayHen)</dd>
+
+            <dt class="col-sm-3">Lý do khám</dt>
+            <dd class="col-sm-9">@Html.DisplayFor(model => model.LyDoKham)</dd>
+
+            <dt class="col-sm-3">Trạng thái</dt>
+            <dd class="col-sm-9">@Html.DisplayFor(model => model.TrangThai)</dd>
+        </dl>
+
+        <div>
+            <a asp-action="Index" class="btn btn-secondary">Quay lại</a>
+        </div>
+    </div>
+</div>

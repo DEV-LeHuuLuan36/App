@@ -1,0 +1,84 @@
+﻿@model IEnumerable<App.Models.YTa>
+
+@{
+    ViewData["Title"] = "Quản lý Y tá";
+}
+
+@if (TempData["Success"] != null)
+{
+    <div class="alert alert-success">@TempData["Success"]</div>
+}
+@if (TempData["Error"] != null)
+{
+    <div class="alert alert-danger">@TempData["Error"]</div>
+}
+
+<!-- (LƯU Ý: Trang này chỉ để xem. Thêm/Sửa Y tá PHẢI LÀM từ trang Nhân Viên) -->
+
+<div class="card shadow mb-4">
+    <div class="card-header py-3 d-flex justify-content-between align-items-center">
+        <h6 class="m-0 font-weight-bold text-primary">@ViewData["Title"]</h6>
+        <a asp-action="Create" class="btn btn-primary">
+            <i class="fas fa-plus me-1"></i> Thêm y tá mới
+        </a>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>Tên Y tá</th>
+                        <th>Phòng</th>
+                        <th>Khoa</th>
+                        <th>Trạng thái</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>@item.TenYTa</td>
+                            <td>@item.MaPhongNavigation.TenPhong</td>
+                            <td>@item.MaPhongNavigation.MaKhoaNavigation.TenKhoa</td>
+                            <td>
+                                @if (item.TrangThai == true)
+                                {
+                                    <span class="badge bg-success">Đang làm</span>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-danger">Đã nghỉ</span>
+                                }
+                            </td>
+                            <td>
+                                <!-- SỬA LỖI 404 (CHAR(10)): Dùng .Trim() -->
+                                <a asp-action="Edit" asp-route-id="@item.MaYTa.Trim()" class="btn btn-warning btn-sm" title="Sửa (Cảnh báo Logic)">
+                                    <i class="fas fa-edit"></i>
+                                </a>
+
+                                <!-- SỬA LỖI 404 (CHAR(10)): Dùng .Trim() -->
+                                <form asp-action="ToggleStatus" asp-route-id="@item.MaYTa.Trim()" method="post" class="d-inline">
+                                    <input type="hidden" name="id" value="@item.MaYTa.Trim()" />
+                                    @Html.AntiForgeryToken()
+                                    @if (item.TrangThai == true)
+                                    {
+                                        <button type="submit" class="btn btn-danger btn-sm" title="Cho nghỉ việc (Đồng bộ)">
+                                            <i class="fas fa-user-minus"></i> Nghỉ
+                                        </button>
+                                    }
+                                    else
+                                    {
+                                        <button type="submit" class="btn btn-success btn-sm" title="Cho làm lại (Đồng bộ)">
+                                            <i class="fas fa-user-plus"></i> Làm lại
+                                        </button>
+                                    }
+                                </form>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

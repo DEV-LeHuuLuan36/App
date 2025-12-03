@@ -1,0 +1,30 @@
+﻿@model App.Models.BenhNhan
+
+@{
+    ViewData["Title"] = "Xác nhận Xuất viện";
+}
+
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-danger">@ViewData["Title"]</h6>
+    </div>
+    <div class="card-body">
+        <h3>Bạn có chắc muốn cho bệnh nhân này xuất viện?</h3>
+        <p>Hành động này sẽ gọi T-SQL <strong>sp_XuatVienBenhNhan</strong> để cập nhật ngày xuất viện.</p>
+        <hr />
+        <dl class="row">
+            <dt class="col-sm-3">Mã Bệnh nhân</dt>
+            <dd class="col-sm-9">@Model.MaBenhNhan</dd>
+            <dt class="col-sm-3">Họ tên</dt>
+            <dd class="col-sm-9">@Model.HoTenBenhNhan</dd>
+            <dt class="col-sm-3">Phòng</dt>
+            <dd class="col-sm-9">@Model.MaPhongNavigation.TenPhong</dd>
+        </dl>
+
+        <form asp-action="XuatVien">
+            <input type="hidden" asp-for="MaBenhNhan" />
+            <input type="submit" value="Xác nhận Xuất viện" class="btn btn-success" />
+            <a asp-action="Index" class="btn btn-secondary">Quay lại</a>
+        </form>
+    </div>
+</div>

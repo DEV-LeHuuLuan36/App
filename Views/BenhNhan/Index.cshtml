@@ -1,0 +1,80 @@
+﻿@model IEnumerable<App.Models.BenhNhan>
+
+@{
+    ViewData["Title"] = "Quản lý Bệnh nhân";
+}
+
+@if (TempData["Success"] != null)
+{
+    <div class="alert alert-success">@TempData["Success"]</div>
+}
+@if (TempData["Error"] != null)
+{
+    <div class="alert alert-danger">@TempData["Error"]</div>
+}
+
+<div class="card shadow mb-4">
+    <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+        <h6 class="m-0 font-weight-bold text-primary">@ViewData["Title"]</h6>
+
+        @if (User.IsInRole("Role_Developer") || User.IsInRole("Role_DevLead_DevOps") || User.IsInRole("Admin"))
+        {
+            <a asp-action="Create" class="btn btn-primary btn-icon-split">
+                <span class="icon text-white-50">
+                    <i class="fas fa-plus"></i>
+                </span>
+                <span class="text">Tiếp nhận Bệnh nhân mới</span>
+            </a>
+        }
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th>Họ tên</th>
+                        <th>Giới tính</th>
+                        <th>Ngày nhập viện</th>
+                        <th>Ngày xuất viện</th>
+                        <th>Phòng</th>
+                        <th>Trạng thái</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>@Html.DisplayFor(modelItem => item.HoTenBenhNhan)</td>
+                            <td>@Html.DisplayFor(modelItem => item.GioiTinh)</td>
+                            <td>@Html.DisplayFor(modelItem => item.NgayNhapVien)</td>
+                            <td>@Html.DisplayFor(modelItem => item.NgayXuatVien)</td>
+                            <td>@Html.DisplayFor(modelItem => item.MaPhongNavigation.TenPhong)</td>
+                            <td>
+                                @if (item.NgayXuatVien == null)
+                                {
+                                    <span class="badge badge-warning">Đang điều trị</span>
+                                }
+                                else
+                                {
+                                    <span class="badge badge-secondary">Đã xuất viện</span>
+                                }
+                            </td>
+                            <td>
+                                <a asp-action="Edit" asp-route-id="@item.MaBenhNhan" class="btn btn-warning btn-sm">Sửa</a>
+                                <a asp-action="Details" asp-route-id="@item.MaBenhNhan" class="btn btn-info btn-sm">Chi tiết</a>
+
+                                @if (item.NgayXuatVien == null)
+                                {
+                                    <a asp-action="XuatVien" asp-route-id="@item.MaBenhNhan" class="btn btn-success btn-sm">
+                                        <i class="fas fa-hospital-user"></i> Xuất viện
+                                    </a>
+                                }
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

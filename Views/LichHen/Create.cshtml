@@ -1,0 +1,78 @@
+﻿@model App.Models.LichHen
+
+@{
+    ViewData["Title"] = "Đặt lịch hẹn mới";
+}
+
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary">@ViewData["Title"]</h6>
+    </div>
+    <div class="card-body">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="mb-3">
+                        <label asp-for="MaLichHen" class="form-label"></label>
+                        <input asp-for="MaLichHen" class="form-control" />
+                        <span asp-validation-for="MaLichHen" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="mb-3">
+                        <label asp-for="MaBenhNhan" class="form-label">Bệnh nhân</label>
+                        <select asp-for="MaBenhNhan" class="form-control" asp-items="ViewBag.MaBenhNhan">
+                            <option value="">-- Chọn bệnh nhân --</option>
+                        </select>
+                        <span asp-validation-for="MaBenhNhan" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="mb-3">
+                        <label asp-for="MaKhoa" class="form-label">Khoa</label>
+                        <select asp-for="MaKhoa" class="form-control" asp-items="ViewBag.MaKhoa">
+                            <option value="">-- Chọn khoa --</option>
+                        </select>
+                        <span asp-validation-for="MaKhoa" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="mb-3">
+                        <label asp-for="MaBacSi" class="form-label">Bác sĩ (Nếu có)</label>
+                        <select asp-for="MaBacSi" class="form-control" asp-items="ViewBag.MaBacSi">
+                            <option value="">-- Chọn bác sĩ (Không bắt buộc) --</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="NgayHen" class="form-label"></label>
+                <input asp-for="NgayHen" class="form-control" type="datetime-local" />
+                <span asp-validation-for="NgayHen" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="LyDoKham" class="form-label"></label>
+                <textarea asp-for="LyDoKham" class="form-control"></textarea>
+                <span asp-validation-for="LyDoKham" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <input type="submit" value="Đặt lịch" class="btn btn-primary" />
+                <a asp-action="Index" class="btn btn-secondary">Quay lại</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

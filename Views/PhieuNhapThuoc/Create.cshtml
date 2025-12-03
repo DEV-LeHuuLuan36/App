@@ -1,0 +1,139 @@
+﻿@model App.ViewModels.PhieuNhapViewModel
+
+@{
+    ViewData["Title"] = "Lập Phiếu nhập thuốc mới (Dùng T-SQL UDTT)";
+    var thuocList = ViewData["ThuocList"] as SelectList;
+}
+
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary">@ViewData["Title"]</h6>
+    </div>
+    <div class="card-body">
+        <form asp-action="Create" method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <h5 class="text-primary">Thông tin Chung</h5>
+            <div class="row">
+                <div class="col-md-4 mb-3">
+                    <label asp-for="MaPhieuNhap" class="form-label"></label>
+                    <input asp-for="MaPhieuNhap" class="form-control" />
+                    <span asp-validation-for="MaPhieuNhap" class="text-danger"></span>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <label asp-for="MaNhanVien" class="form-label"></label>
+                    <select asp-for="MaNhanVien" class="form-control" asp-items="@(ViewData["MaNhanVien"] as SelectList)">
+                        <option value="">-- Chọn nhân viên --</option>
+                    </select>
+                    <span asp-validation-for="MaNhanVien" class="text-danger"></span>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <label asp-for="MaNhaCungCap" class="form-label"></label>
+                    <select asp-for="MaNhaCungCap" class="form-control" asp-items="@(ViewData["MaNhaCungCap"] as SelectList)">
+                        <option value="">-- Chọn NCC (Nếu có) --</option>
+                    </select>
+                </div>
+            </div>
+
+            <hr />
+            <h5 class="text-primary">Chi tiết Nhập thuốc</h5>
+            <div asp-validation-for="ChiTietNhap" class="text-danger"></div>
+
+            <div class="table-responsive">
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Thuốc</th>
+                            <th>Số lượng</th>
+                            <th>Đơn giá nhập</th>
+                            <th>Hạn sử dụng</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody id="chiTietContainer">
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="row">
+                <div class="col-md-12">
+                    <a href="#" id="addChiTiet" class="btn btn-success">
+                        <i class="fas fa-plus"></i> Thêm Thuốc
+                    </a>
+                </div>
+            </div>
+
+            <hr />
+            <div class="mb-3">
+                <input type="submit" value="Lưu Phiếu nhập" class="btn btn-primary btn-lg" />
+                <a asp-action="Index" class="btn btn-secondary">Quay lại</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+<table style="display: none;">
+    <tbody id="chiTietTemplate">
+        <tr>
+            <td>
+                <select name="ChiTietNhap[index].MaThuoc" class="form-control">
+                    <option value="">-- Chọn thuốc --</option>
+                    @if (thuocList != null)
+                    {
+                        @foreach (var item in thuocList)
+                        {
+                            <option value="@item.Value">@item.Text</option>
+                        }
+                    }
+                </select>
+            </td>
+            <td><input type="number" name="ChiTietNhap[index].SoLuong" class="form-control" value="1" min="1" /></td>
+            <td><input type="number" name="ChiTietNhap[index].DonGiaNhap" class="form-control" value="0" min="0" /></td>
+            <td><input type="date" name="ChiTietNhap[index].HanSuDung" class="form-control" /></td>
+            <td><a href="#" class="btn btn-danger removeChiTiet"><i class="fas fa-trash"></i></a></td>
+        </tr>
+    </tbody>
+</table>
+
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+
+    <script>
+        $(document).ready(function () {
+
+            function updateRowIndices() {
+                $('#chiTietContainer tr').each(function(index) {
+                    $(this).find('input, select').each(function() {
+                        var name = $(this).attr('name');
+                        if (name) {
+                            var newName = name.replace(/\[\d+\]/, '[' + index + ']');
+                            $(this).attr('name', newName);
+                        }
+                    });
+                });
+            }
+
+            // Thêm dòng mới
+            $('#addChiTiet').click(function (e) {
+                e.preventDefault();
+
+                var templateHtml = $('#chiTietTemplate').html();
+                var rowCount = $('#chiTietContainer tr').length;
+
+                templateHtml = templateHtml.replace(/\[index\]/g, '[' + rowCount + ']');
+
+                $('#chiTietContainer').append(templateHtml);
+            });
+
+            // Xóa dòng
+            $('#chiTietContainer').on('click', '.removeChiTiet', function (e) {
+                e.preventDefault();
+                $(this).closest('tr').remove();
+                updateRowIndices();
+            });
+        });
+    </script>
+}

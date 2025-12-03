@@ -1,0 +1,76 @@
+﻿@model App.Models.ThietBi
+
+@{
+    ViewData["Title"] = "Thêm Thiết bị mới";
+}
+
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary">@ViewData["Title"]</h6>
+    </div>
+    <div class="card-body">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <div class="row">
+                <div class="col-md-4 mb-3">
+                    <label asp-for="MaThietBi" class="form-label"></label>
+                    <input asp-for="MaThietBi" class="form-control" />
+                    <span asp-validation-for="MaThietBi" class="text-danger"></span>
+                </div>
+                <div class="col-md-8 mb-3">
+                    <label asp-for="TenThietBi" class="form-label"></label>
+                    <input asp-for="TenThietBi" class="form-control" />
+                    <span asp-validation-for="TenThietBi" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="MaPhong" class="form-label">Phòng (Vị trí)</label>
+                <select asp-for="MaPhong" class="form-control" asp-items="ViewBag.MaPhong">
+                    <option value="">-- Chọn phòng --</option>
+                </select>
+                <span asp-validation-for="MaPhong" class="text-danger"></span>
+            </div>
+
+            <div class="row">
+                <div class="col-md-4 mb-3">
+                    <label asp-for="NgayMua" class="form-label"></label>
+                    <input asp-for="NgayMua" class="form-control" type="date" />
+                    <span asp-validation-for="NgayMua" class="text-danger"></span>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <label asp-for="HanBaoHanh" class="form-label"></label>
+                    <input asp-for="HanBaoHanh" class="form-control" type="date" />
+                    <span asp-validation-for="HanBaoHanh" class="text-danger"></span>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <label asp-for="DonGia" class="form-label"></label>
+                    <input asp-for="DonGia" class="form-control" type="number" />
+                    <span asp-validation-for="DonGia" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="TinhTrang" class="form-label"></label>
+                <select asp-for="TinhTrang" class="form-control">
+                    <option value="Hoạt động">Hoạt động</option>
+                    <option value="Bảo trì">Bảo trì</option>
+                    <option value="Hỏng">Hỏng</option>
+                    <option value="Ngừng sử dụng">Ngừng sử dụng</option>
+                </select>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="GhiChu" class="form-label"></label>
+                <textarea asp-for="GhiChu" class="form-control"></textarea>
+                <span asp-validation-for="GhiChu" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <input type="submit" value="Tạo mới" class="btn btn-primary" />
+                <a asp-action="Index" class="btn btn-secondary">Quay lại</a>
+            </div>
+        </form>
+    </div>
+</div>

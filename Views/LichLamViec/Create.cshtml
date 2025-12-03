@@ -1,0 +1,95 @@
+﻿@model App.Models.LichLamViec
+
+@{
+    ViewData["Title"] = "Xếp lịch làm việc mới";
+}
+
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary">@ViewData["Title"]</h6>
+    </div>
+    <div class="card-body">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <div class="row">
+                <div class="col-md-4 mb-3">
+                    <label asp-for="MaLich" class="form-label"></label>
+                    <input asp-for="MaLich" class="form-control" />
+                    <span asp-validation-for="MaLich" class="text-danger"></span>
+                </div>
+                <div class="col-md-8 mb-3">
+                    <label asp-for="MaNhanVien" class="form-label">Nhân viên (Bác sĩ / Y tá)</label>
+                    <select asp-for="MaNhanVien" class="form-control" asp-items="ViewBag.MaNhanVien" id="ddlNhanVien">
+                        <option value="">-- Chọn nhân viên --</option>
+                    </select>
+                    <span asp-validation-for="MaNhanVien" class="text-danger"></span>
+                </div>
+            </div>
+
+            <input type="hidden" asp-for="LoaiNhanVien" id="txtLoaiNhanVien" />
+
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label asp-for="NgayLamViec" class="form-label"></label>
+                    <input asp-for="NgayLamViec" class="form-control" type="date" />
+                    <span asp-validation-for="NgayLamViec" class="text-danger"></span>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label asp-for="CaLamViec" class="form-label"></label>
+                    <select asp-for="CaLamViec" class="form-control">
+                        <option value="Ca sáng (7h-15h)">Ca sáng (7h-15h)</option>
+                        <option value="Ca chiều (14h-22h)">Ca chiều (14h-22h)</option>
+                        <option value="Ca tối (22h-6h)">Ca tối (22h-6h)</option>
+                        <option value="Hành chính (8h-17h)">Hành chính (8h-17h)</option>
+                    </select>
+                    <span asp-validation-for="CaLamViec" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="TrangThai" class="form-label"></label>
+                <select asp-for="TrangThai" class="form-control">
+                    <option value="Đã lên lịch">Đã lên lịch</option>
+                    <option value="Đã hoàn thành">Đã hoàn thành</option>
+                    <option value="Nghỉ phép">Nghỉ phép</option>
+                    <option value="Hủy">Hủy</option>
+                </select>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="GhiChu" class="form-label"></label>
+                <textarea asp-for="GhiChu" class="form-control"></textarea>
+            </div>
+
+            <div class="mb-3">
+                <input type="submit" value="Tạo mới" class="btn btn-primary" />
+                <a asp-action="Index" class="btn btn-secondary">Quay lại</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+
+    <script>
+        // Script để tự động lấy LoaiNhanVien từ optgroup
+        $(document).ready(function () {
+            $('#ddlNhanVien').change(function() {
+                var selectedOption = $(this).find('option:selected');
+                var optgroupLabel = selectedOption.closest('optgroup').attr('label');
+
+                if (optgroupLabel === 'Bác sĩ') {
+                    $('#txtLoaiNhanVien').val('BacSi');
+                } else if (optgroupLabel === 'Y tá') {
+                    $('#txtLoaiNhanVien').val('YTa');
+                } else {
+                    $('#txtLoaiNhanVien').val('');
+                }
+            });
+        });
+    </script>
+}

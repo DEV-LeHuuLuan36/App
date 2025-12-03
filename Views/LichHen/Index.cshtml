@@ -1,0 +1,80 @@
+﻿@model IEnumerable<App.Models.LichHen>
+
+@{
+    ViewData["Title"] = "Quản lý Lịch hẹn";
+}
+
+@if (TempData["Success"] != null)
+{
+    <div class="alert alert-success">@TempData["Success"]</div>
+}
+@if (TempData["Error"] != null)
+{
+    <div class="alert alert-danger">@TempData["Error"]</div>
+}
+
+<div class="card shadow mb-4">
+    <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+        <h6 class="m-0 font-weight-bold text-primary">@ViewData["Title"]</h6>
+        <a asp-action="Create" class="btn btn-primary">
+            <i class="fas fa-plus me-1"></i> Đặt lịch hẹn mới
+        </a>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th>Bệnh nhân</th>
+                        <th>Bác sĩ</th>
+                        <th>Khoa</th>
+                        <th>Ngày hẹn</th>
+                        <th>Trạng thái</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>@Html.DisplayFor(modelItem => item.MaBenhNhanNavigation.HoTenBenhNhan)</td>
+                            <td>@Html.DisplayFor(modelItem => item.MaBacSiNavigation.TenBacSi)</td>
+                            <td>@Html.DisplayFor(modelItem => item.MaKhoaNavigation.TenKhoa)</td>
+                            <td>@Html.DisplayFor(modelItem => item.NgayHen)</td>
+                            <td>
+                                @if (item.TrangThai == "Chờ xác nhận")
+                                {
+                                    <span class="badge bg-warning text-dark">@item.TrangThai</span>
+                                }
+                                else if (item.TrangThai == "Đã xác nhận")
+                                {
+                                    <span class="badge bg-success">@item.TrangThai</span>
+                                }
+                                else if (item.TrangThai == "Hủy")
+                                {
+                                    <span class="badge bg-danger">@item.TrangThai</span>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-secondary">@item.TrangThai</span>
+                                }
+                            </td>
+                            <td>
+                                <a asp-action="Details" asp-route-id="@item.MaLichHen" class="btn btn-info btn-sm">Chi tiết</a>
+
+                                @if (item.TrangThai == "Chờ xác nhận")
+                                {
+                                    <a asp-action="XacNhan" asp-route-id="@item.MaLichHen" class="btn btn-success btn-sm">Xác nhận</a>
+                                }
+                                @if (item.TrangThai != "Hủy" && item.TrangThai != "Đã khám")
+                                {
+                                    <a asp-action="Huy" asp-route-id="@item.MaLichHen" class="btn btn-danger btn-sm">Hủy</a>
+                                }
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

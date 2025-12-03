@@ -1,0 +1,52 @@
+﻿@model App.Models.CaTruc
+
+@{
+    ViewData["Title"] = "Cập nhật Ca trực";
+}
+
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary">@ViewData["Title"]</h6>
+    </div>
+    <div class="card-body">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="MaCa" />
+
+            <div class="mb-3">
+                <label asp-for="TenCa" class="form-label"></label>
+                <input asp-for="TenCa" class="form-control" />
+                <span asp-validation-for="TenCa" class="text-danger"></span>
+            </div>
+
+            <div class="row">
+                <div class="col-md-4 mb-3">
+                    <label asp-for="GioBatDau" class="form-label"></label>
+                    <input asp-for="GioBatDau" class="form-control" type="time" />
+                    <span asp-validation-for="GioBatDau" class="text-danger"></span>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <label asp-for="GioKetThuc" class="form-label"></label>
+                    <input asp-for="GioKetThuc" class="form-control" type="time" />
+                    <span asp-validation-for="GioKetThuc" class="text-danger"></span>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <label asp-for="HeSoLuong" class="form-label"></label>
+                    <input asp-for="HeSoLuong" class="form-control" type="number" step="00.001" />
+                    <span asp-validation-for="HeSoLuong" class_danger"></span>
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="MoTa" class="form-label"></label>
+                <textarea asp-for="MoTa" class="form-control"></textarea>
+                <span asp-validation-for="MoTa" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <input type="submit" value="Lưu thay đổi" class="btn btn-primary" />
+                <a asp-action="Index" class="btn btn-secondary">Quay lại</a>
+            </div>
+        </form>
+    </div>
+</div>

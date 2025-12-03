@@ -1,0 +1,54 @@
+﻿@model App.Models.BenhNhan
+
+@{
+    ViewData["Title"] = "Chi tiết Bệnh nhân";
+}
+
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary">@ViewData["Title"]</h6>
+    </div>
+    <div class="card-body">
+        <dl class="row">
+            <dt class="col-sm-3">Mã Bệnh nhân</dt>
+            <dd class="col-sm-9">@Html.DisplayFor(model => model.MaBenhNhan)</dd>
+
+            <dt class="col-sm-3">Họ tên</dt>
+            <dd class="col-sm-9">@Html.DisplayFor(model => model.HoTenBenhNhan)</dd>
+
+            <dt class="col-sm-3">Ngày sinh</dt>
+            <dd class="col-sm-9">@Model.NgaySinh?.ToString("dd/MM/yyyy")</dd>
+
+            <dt class="col-sm-3">Giới tính</dt>
+            <dd class="col-sm-9">@Html.DisplayFor(model => model.GioiTinh)</dd>
+
+            <dt class="col-sm-3">Địa chỉ</dt>
+            <dd class="col-sm-9">@Html.DisplayFor(model => model.DiaChi)</dd>
+
+            <dt class="col-sm-3">Số điện thoại</dt>
+            <dd class="col-sm-9">@Html.DisplayFor(model => model.SoDienThoai)</dd>
+
+            <hr class="mt-2" />
+
+            <dt class="col-sm-3">Ngày nhập viện</dt>
+            <dd class="col-sm-9">@Model.NgayNhapVien?.ToString("dd/MM/yyyy")</dd>
+
+            <dt class="col-sm-3">Ngày xuất viện</dt>
+            <dd class="col-sm-9">@Model.NgayXuatVien?.ToString("dd/MM/yyyy")</dd>
+
+            <dt class="col-sm-3">Phòng</dt>
+            <dd class="col-sm-9">@Html.DisplayFor(model => model.MaPhongNavigation.TenPhong)</dd>
+
+            <dt class="col-sm-3">Trạng thái</dt>
+            <dd class="col-sm-9">@Html.DisplayFor(model => model.TrangThai)</dd>
+        </dl>
+    </div>
+    <div class="card-footer">
+        <a asp-controller="HoSoBenhAn" asp-action="Index" asp-route-id="@Model.MaBenhNhan" class="btn btn-primary">
+            <i class="fas fa-file-medical"></i> Xem Bệnh án
+        </a>
+
+        <a asp-action="Edit" asp-route-id="@Model.MaBenhNhan" class="btn btn-warning">Sửa</a>
+        <a asp-action="Index" class="btn btn-secondary">Quay lại</a>
+    </div>
+</div>

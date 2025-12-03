@@ -1,0 +1,55 @@
+﻿@model App.Models.DonThuoc
+
+@{
+    ViewData["Title"] = "Kê đơn thuốc";
+}
+
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary">@ViewData["Title"] (cho Mã Điều trị: @Model.MaDieuTri)</h6>
+    </div>
+    <div class="card-body">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class_danger"></div>
+            <input type="hidden" asp-for="MaDieuTri" />
+
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label asp-for="MaDonThuoc" class_label"></label>
+                    <input asp-for="MaDonThuoc" class="form-control" />
+                    <span asp-validation-for="MaDonThuoc" class_danger"></span>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label asp-for="MaThuoc" class_label">Thuốc (Chỉ hiện thuốc còn tồn kho)</label>
+                    <select asp-for="MaThuoc" class="form-control" asp-items="ViewBag.MaThuoc">
+                        <option value="">-- Chọn thuốc --</option>
+                    </select>
+                    <span asp-validation-for="MaThuoc" class_danger"></span>
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="SoLuong" class_label"></label>
+                <input asp-for="SoLuong" class="form-control" type="number" min="1" />
+                <span asp-validation-for="SoLuong" class_danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="CachDung" class_label"></label>
+                <textarea asp-for="CachDung" class="form-control" rows="3"></textarea>
+                <span asp-validation-for="CachDung" class_danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <input type="submit" value="Kê đơn" class="btn btn-primary" />
+                <a asp-action="Index" asp-route-id="@Model.MaDieuTri" class="btn btn-secondary">Quay lại</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

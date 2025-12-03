@@ -1,0 +1,85 @@
+﻿@model IEnumerable<App.Models.Khoa>
+
+@{
+    ViewData["Title"] = "Quản lý Khoa";
+}
+
+@if (TempData["Success"] != null)
+{
+    <div class="alert alert-success">@TempData["Success"]</div>
+}
+@if (TempData["Error"] != null)
+{
+    <div class="alert alert-danger">@TempData["Error"]</div>
+}
+
+<div class="card shadow mb-4">
+    <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+        <h6 class="m-0 font-weight-bold text-primary">@ViewData["Title"]</h6>
+
+        <!-- Chỉ DevLead và Admin mới thấy nút "Tạo mới" -->
+        @if (User.IsInRole("Role_DevLead_DevOps") || User.IsInRole("Admin"))
+        {
+            <a asp-action="Create" class="btn btn-primary">
+                <i class="fas fa-plus me-1"></i> Tạo mới
+            </a>
+        }
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th>Tên Khoa</th>
+                        <th>Mô tả</th>
+                        <th>Trạng thái</th>
+                        <th style="width: 200px;">Hành động</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>@Html.DisplayFor(modelItem => item.TenKhoa)</td>
+                            <td>@Html.DisplayFor(modelItem => item.MoTa)</td>
+                            <td>
+                                @if (item.TrangThai == true)
+                                {
+                                    <span class="badge bg-success">Hoạt động</span>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-danger">Đã ẩn</span>
+                                }
+                            </td>
+                            <td>
+                                <a asp-action="Details" asp-route-id="@item.MaKhoa" class="btn btn-info btn-sm">Chi tiết</a>
+
+                                @if (User.IsInRole("Role_DevLead_DevOps") || User.IsInRole("Admin"))
+                                {
+                                    <a asp-action="Edit" asp-route-id="@item.MaKhoa" class="btn btn-warning btn-sm">Sửa</a>
+
+                                    <form asp-action="ToggleStatus" method="post" class="d-inline">
+                                        <input type="hidden" name="id" value="@item.MaKhoa" />
+                                        @if (item.TrangThai == true)
+                                        {
+                                            <button type="submit" class="btn btn-danger btn-sm" title="Ẩn Khoa này">
+                                                <i class="fas fa-eye-slash"></i> Ẩn
+                                            </button>
+                                        }
+                                        else
+                                        {
+                                            <button type="submit" class="btn btn-success btn-sm" title="Hiện Khoa này">
+                                                <i class="fas fa-eye"></i> Hiện
+                                            </button>
+                                        }
+                                    </form>
+                                }
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

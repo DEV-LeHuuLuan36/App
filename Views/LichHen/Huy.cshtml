@@ -1,0 +1,30 @@
+﻿@model App.Models.LichHen
+
+@{
+    ViewData["Title"] = "Hủy Lịch hẹn";
+}
+
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-danger">@ViewData["Title"]</h6>
+    </div>
+    <div class="card-body">
+        <h3>Bạn có chắc muốn HỦY lịch hẹn này?</h3>
+        <p>Hành động này sẽ chuyển trạng thái lịch hẹn thành "Hủy".</p>
+        <div>
+            <hr />
+            <dl class="row">
+                <dt class="col-sm-3">Bệnh nhân</dt>
+                <dd class="col-sm-9">@Model.MaBenhNhanNavigation.HoTenBenhNhan</dd>
+                <dt class="col-sm-3">Ngày hẹn</dt>
+                <dd class="col-sm-9">@Model.NgayHen</dd>
+            </dl>
+
+            <form asp-action="Huy">
+                <input type="hidden" asp-for="MaLichHen" />
+                <input type="submit" value="Xác nhận Hủy" class="btn btn-danger" />
+                <a asp-action="Index" class="btn btn-secondary">Quay lại</a>
+            </form>
+        </div>
+    </div>
+</div>
