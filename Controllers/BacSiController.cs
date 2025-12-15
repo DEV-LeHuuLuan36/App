@@ -269,5 +269,47 @@ namespace App.Controllers
             }
             return RedirectToAction(nameof(Index));
         }
+        public async Task<IActionResult> ThongKe()
+        {
+            // Gọi SP "sp_Admin_ThongKeNhanSu"
+            // SP này sẽ khóa bảng BacSi trong 15s (SERIALIZABLE)
+            // Trong lúc trang này đang load, không ai thêm được Bác sĩ mới
+
+            var data = new List<object>(); 
+
+            try
+            {
+                // Dùng ADO.NET để đọc dữ liệu trả về từ SP
+                using (var conn = new SqlConnection(_connectionString))
+                {
+                    await conn.OpenAsync();
+                    using (var cmd = new SqlCommand("sp_Admin_ThongKeNhanSu", conn))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.CommandTimeout = 60; // Tăng thời gian chờ lên > 15s
+
+                        using (var reader = await cmd.ExecuteReaderAsync())
+                        {
+                            while (await reader.ReadAsync())
+                            {
+                                // Đọc dữ liệu demo (Tên Khoa - Số lượng)
+                                data.Add(new
+                                {
+                                    TenKhoa = reader["TenKhoa"].ToString(),
+                                    SoLuong = reader["SoLuongBacSi"]
+                                });
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                ViewBag.Error = "Lỗi thống kê: " + ex.Message;
+            }
+
+            ViewBag.DataThongKe = data;
+            return View();
+        }
     }
 }

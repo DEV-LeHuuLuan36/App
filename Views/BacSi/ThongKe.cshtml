@@ -1,0 +1,36 @@
+﻿@{
+    ViewData["Title"] = "Thống kê Nhân sự (Admin)";
+    var data = ViewBag.DataThongKe as IEnumerable<dynamic>;
+}
+
+<div class="container mt-4">
+    <h2 class="text-primary"><i class="fa fa-chart-pie"></i> Báo Cáo Nhân Sự (Admin Only)</h2>
+    <div class="alert alert-info">
+        <strong>Demo Transaction:</strong> Trang này đang chạy mức <code>SERIALIZABLE</code>.
+        Trong quá trình tải (15s), hệ thống sẽ <strong>KHÓA</strong> bảng Bác sĩ.
+        Mọi thao tác "Thêm Bác sĩ mới" ở tab khác sẽ bị chặn.
+    </div>
+
+    @if (data != null)
+    {
+        <table class="table table-bordered table-hover mt-3">
+            <thead class="table-dark">
+                <tr>
+                    <th>Tên Khoa</th>
+                    <th>Số Lượng Bác Sĩ</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in data)
+                {
+                    <tr>
+                        <td>@item.TenKhoa</td>
+                        <td>@item.SoLuong</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+
+    <a asp-action="Index" class="btn btn-secondary mt-3">Quay lại danh sách</a>
+</div>
