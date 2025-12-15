@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.Data.SqlClient;
 using System.Data;
 using App.ViewModels;
+using System.Security.Claims; // Cần thêm cái này để lấy User hiện tại
 
 namespace App.Controllers
 {
@@ -36,60 +37,78 @@ namespace App.Controllers
         }
 
         // GET: BacSi/Create
-        // SỬA LỖI LOGIC 1.1: Chuyển hướng đến NhanVien/Create
-        [Obsolete("Dùng NhanVien/Create với LoaiNhanVien = 'Bác sĩ'")]
         public IActionResult Create()
         {
-            TempData["Error"] = "Lỗi Logic: Vui lòng Thêm Bác sĩ từ trang 'Thêm Nhân viên mới' và chọn Loại Nhân viên là 'Bác sĩ'.";
+            TempData["Error"] = "Vui lòng Thêm Bác sĩ từ trang 'Thêm Nhân viên mới' và chọn Loại Nhân viên là 'Bác sĩ'.";
             return RedirectToAction("Create", "NhanVien");
         }
 
-        // POST: BacSi/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Obsolete("Dùng NhanVien/Create với LoaiNhanVien = 'Bác sĩ'")]
         public async Task<IActionResult> Create(NhanVienBacSiViewModel vm)
         {
-            // Hàm này không nên được gọi
             ModelState.AddModelError("", "Lỗi Logic: Không được phép thêm Bác sĩ từ trang này. Hãy dùng NhanVien/Create.");
             LoadKhoaList(vm.MaKhoa);
             return View(vm);
         }
 
-
-        //
-        // === SỬA LỖI 404 VÀ LỖI InvalidOperationException TẠI ĐÂY ===
-        //
+        // =========================================================
+        // SỬA ACTION EDIT (GET): THÊM CODE LOCKING (sp_AcquireLock)
+        // =========================================================
         public async Task<IActionResult> Edit(string id)
         {
             if (id == null) return NotFound();
-
-            // --- SỬA LỖI 404 (DO CHAR(10)) ---
-            // Dùng Where và Trim() để tìm kiếm
             string trimmedId = id.Trim();
 
-            // Tìm Bác sĩ (bảng CON)
-            var bacSi = await _context.BacSis
-                .FirstOrDefaultAsync(b => b.MaBacSi.Trim() == trimmedId);
+            // --- BƯỚC 1: CỐ GẮNG LẤY KHÓA (ACQUIRE LOCK) ---
+            // Lấy tên user đang đăng nhập (Email hoặc Username)
+            string currentUser = User.Identity?.Name ?? "Unknown User";
 
-            if (bacSi == null)
+            try
             {
-                TempData["Error"] = $"Không tìm thấy Bác sĩ với ID = {id}.";
-                return RedirectToAction(nameof(Index));
+                using (var conn = new SqlConnection(_connectionString))
+                {
+                    await conn.OpenAsync();
+                    using (var cmd = new SqlCommand("sp_AcquireLock", conn))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.AddWithValue("@TableName", "BacSi"); // Tên bảng cần khóa
+                        cmd.Parameters.AddWithValue("@RecordID", trimmedId); // Mã bản ghi (MaBacSi)
+                        cmd.Parameters.AddWithValue("@UserName", currentUser); // Người đang muốn sửa
+
+                        using (var reader = await cmd.ExecuteReaderAsync())
+                        {
+                            if (await reader.ReadAsync())
+                            {
+                                int success = reader.GetInt32(reader.GetOrdinal("Success"));
+                                string message = reader.GetString(reader.GetOrdinal("Message"));
+
+                                // Nếu Success == 0 nghĩa là người khác đang sửa -> Chặn lại
+                                if (success == 0)
+                                {
+                                    TempData["Error"] = message; // Hiện thông báo: "Bảng đang được sử dụng bởi..."
+                                    return RedirectToAction(nameof(Index)); // Đẩy về trang danh sách
+                                }
+                            }
+                        }
+                    }
+                }
             }
-
-            // Dùng Cccd (Khóa duy nhất) để tìm NhanVien (bảng CHA) tương ứng
-            var nhanVien = await _context.NhanViens
-                .FirstOrDefaultAsync(n => n.Cccd == bacSi.Cccd);
-
-            if (nhanVien == null)
+            catch (Exception ex)
             {
-                TempData["Error"] = $"Lỗi Logic Kế thừa: Không tìm thấy NhanVien (CHA) tương ứng với BacSi (CON) ID = {id}. (Cccd: {bacSi.Cccd})";
-                return RedirectToAction(nameof(Index));
+                // Nếu lỗi kết nối Lock thì thôi, vẫn cho sửa nhưng log lỗi (hoặc chặn luôn tùy bạn)
+                Console.WriteLine("Lỗi AcquireLock: " + ex.Message);
             }
+            // --- KẾT THÚC BƯỚC 1 ---
 
-            // --- SỬA LỖI InvalidOperationException ---
-            // Phải tạo ViewModel (vm) và trả về (return View(vm))
+
+            // --- BƯỚC 2: LOAD DỮ LIỆU NHƯ CŨ ---
+            var bacSi = await _context.BacSis.FirstOrDefaultAsync(b => b.MaBacSi.Trim() == trimmedId);
+            if (bacSi == null) return NotFound();
+
+            var nhanVien = await _context.NhanViens.FirstOrDefaultAsync(n => n.Cccd == bacSi.Cccd);
+            if (nhanVien == null) return NotFound();
+
             var vm = new NhanVienBacSiViewModel
             {
                 MaNhanVien = nhanVien.MaNhanVien,
@@ -103,42 +122,38 @@ namespace App.Controllers
                 TrinhDo = nhanVien.TrinhDo,
                 NgayVaoLam = nhanVien.NgayVaoLam,
                 TrangThai = nhanVien.TrangThai ?? true,
-
                 MaKhoa = bacSi.MaKhoa,
                 ChuyenKhoa = bacSi.ChuyenKhoa,
                 HocVi = bacSi.HocVi,
                 BangCap = bacSi.BangCap,
                 KinhNghiem = bacSi.KinhNghiem
             };
-            // --- HẾT SỬA ---
 
             LoadKhoaList(vm.MaKhoa);
-            return View(vm); // << Trả về ViewModel (vm)
+            return View(vm);
         }
 
+        // =============================================================
+        // SỬA ACTION EDIT (POST): THÊM CODE NHẢ KHÓA (sp_ReleaseLock)
+        // =============================================================
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(string id, NhanVienBacSiViewModel vm)
         {
-            // --- SỬA LỖI 404 (DO CHAR(10)) ---
             if (id.Trim() != vm.MaNhanVien.Trim()) return NotFound();
-            // --- HẾT SỬA ---
 
-            // Sửa lỗi validation 'NhanVienBacSiViewModel' (namespace)
-            // (ViewModel của bạn nằm trong App.Models, tôi đã sửa using ở trên)
             if (ModelState.IsValid)
             {
                 try
                 {
-                    // Dùng SP (Vì SP đã sửa lỗi Logic Kế thừa)
                     using (var conn = new SqlConnection(_connectionString))
                     {
                         await conn.OpenAsync();
+
+                        // 1. Cập nhật dữ liệu (Logic cũ)
                         using (var cmd = new SqlCommand("sp_CapNhatBacSi", conn))
                         {
                             cmd.CommandType = CommandType.StoredProcedure;
-
-                            // 1. Thông tin NhanVien (chung)
                             cmd.Parameters.AddWithValue("@MaNhanVien", vm.MaNhanVien);
                             cmd.Parameters.AddWithValue("@HoTen", vm.HoTen);
                             cmd.Parameters.AddWithValue("@NgaySinh", (object)vm.NgaySinh ?? DBNull.Value);
@@ -149,8 +164,6 @@ namespace App.Controllers
                             cmd.Parameters.AddWithValue("@Cccd", (object)vm.CCCD ?? DBNull.Value);
                             cmd.Parameters.AddWithValue("@TrinhDo", (object)vm.TrinhDo ?? DBNull.Value);
                             cmd.Parameters.AddWithValue("@NgayVaoLam", (object)vm.NgayVaoLam ?? DBNull.Value);
-
-                            // 2. Thông tin BacSi (riêng)
                             cmd.Parameters.AddWithValue("@MaKhoa", vm.MaKhoa);
                             cmd.Parameters.AddWithValue("@ChuyenKhoa", (object)vm.ChuyenKhoa ?? DBNull.Value);
                             cmd.Parameters.AddWithValue("@HocVi", (object)vm.HocVi ?? DBNull.Value);
@@ -159,6 +172,19 @@ namespace App.Controllers
 
                             await cmd.ExecuteNonQueryAsync();
                         }
+
+                        // --- 2. NHẢ KHÓA (RELEASE LOCK) SAU KHI LƯU XONG ---
+                        string currentUser = User.Identity?.Name ?? "Unknown User";
+                        using (var cmdLock = new SqlCommand("sp_ReleaseLock", conn))
+                        {
+                            cmdLock.CommandType = CommandType.StoredProcedure;
+                            cmdLock.Parameters.AddWithValue("@TableName", "BacSi");
+                            cmdLock.Parameters.AddWithValue("@RecordID", id.Trim());
+                            cmdLock.Parameters.AddWithValue("@UserName", currentUser);
+
+                            await cmdLock.ExecuteNonQueryAsync();
+                        }
+                        // --- HẾT PHẦN NHẢ KHÓA ---
                     }
 
                     TempData["Success"] = "Cập nhật bác sĩ thành công!";
@@ -177,6 +203,38 @@ namespace App.Controllers
             return View(vm);
         }
 
+        // =============================================================
+        // ACTION MỚI: NHẢ KHÓA KHI BẤM "HỦY" (CANCEL) HOẶC "BACK"
+        // (Bạn cần thêm nút gọi action này trong View Edit.cshtml nếu muốn kỹ hơn)
+        // =============================================================
+        public async Task<IActionResult> CancelEdit(string id)
+        {
+            if (string.IsNullOrEmpty(id)) return RedirectToAction(nameof(Index));
+
+            try
+            {
+                using (var conn = new SqlConnection(_connectionString))
+                {
+                    await conn.OpenAsync();
+                    string currentUser = User.Identity?.Name ?? "Unknown User";
+                    using (var cmd = new SqlCommand("sp_ReleaseLock", conn))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.AddWithValue("@TableName", "BacSi");
+                        cmd.Parameters.AddWithValue("@RecordID", id.Trim());
+                        cmd.Parameters.AddWithValue("@UserName", currentUser);
+                        await cmd.ExecuteNonQueryAsync();
+                    }
+                }
+            }
+            catch { } // Lỗi nhả khóa khi hủy thì bỏ qua
+
+            return RedirectToAction(nameof(Index));
+        }
+
+        // ===================================================================
+        // TOGGLE STATUS: Đổi trạng thái Bác sĩ (Không ảnh hưởng Nhân viên)
+        // ===================================================================
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> ToggleStatus(string id)
@@ -184,22 +242,30 @@ namespace App.Controllers
             if (id == null) return NotFound();
             try
             {
-                // Dùng SP (Vì SP đã sửa lỗi Logic Kế thừa)
                 using (var conn = new SqlConnection(_connectionString))
                 {
                     await conn.OpenAsync();
-                    using (var cmd = new SqlCommand("sp_XoaBacSi", conn))
+                    // Gọi SP mới: sp_ToggleTrangThaiBacSi
+                    using (var cmd = new SqlCommand("sp_ToggleTrangThaiBacSi", conn))
                     {
                         cmd.CommandType = CommandType.StoredProcedure;
-                        cmd.Parameters.AddWithValue("@MaBacSi", id.Trim()); // SỬA LỖI 404
-                        await cmd.ExecuteNonQueryAsync();
+                        cmd.Parameters.AddWithValue("@MaBacSi", id.Trim()); // Nhớ Trim() để tránh lỗi CHAR(10)
+
+                        // Đọc thông báo trả về
+                        using (var reader = await cmd.ExecuteReaderAsync())
+                        {
+                            if (await reader.ReadAsync())
+                            {
+                                string msg = reader.GetString(reader.GetOrdinal("Message"));
+                                TempData["Success"] = msg;
+                            }
+                        }
                     }
                 }
-                TempData["Success"] = "Cập nhật trạng thái Bác sĩ thành công.";
             }
             catch (Exception ex)
             {
-                TempData["Error"] = "Lỗi khi cập nhật: " + ex.Message;
+                TempData["Error"] = "Lỗi đổi trạng thái: " + ex.Message;
             }
             return RedirectToAction(nameof(Index));
         }

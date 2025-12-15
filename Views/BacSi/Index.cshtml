@@ -53,27 +53,20 @@
                                 }
                             </td>
                             <td>
-                                <!--
-                                    SỬA LỖI 404 (CHAR(10)): Dùng .Trim()
-                                -->
-                                <a asp-action="Edit" asp-route-id="@item.MaBacSi.Trim()" class="btn btn-warning btn-sm" title="Sửa (Đồng bộ 2 bảng)">
-                                    <i class="fas fa-edit"></i>
-                                </a>
+                                <a asp-action="Edit" asp-route-id="@item.MaBacSi" class="btn btn-primary btn-sm">Sửa</a>
 
-                                <!-- SỬA LỖI 404 (CHAR(10)): Dùng .Trim() -->
-                                <form asp-action="ToggleStatus" asp-route-id="@item.MaBacSi.Trim()" method="post" style="display:inline;">
+                                <form asp-action="ToggleStatus" asp-route-id="@item.MaBacSi" method="post" style="display:inline;">
                                     @Html.AntiForgeryToken()
-                                    <input type="hidden" name="id" value="@item.MaBacSi.Trim()" />
                                     @if (item.TrangThai == true)
                                     {
-                                        <button type="submit" class="btn btn-danger btn-sm" title="Vô hiệu hóa (Đồng bộ)">
-                                            <i class="fas fa-user-minus"></i>
+                                        <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Bạn có chắc muốn cho Bác sĩ này nghỉ không?');">
+                                            Cho nghỉ
                                         </button>
                                     }
                                     else
                                     {
-                                        <button type="submit" class="btn btn-success btn-sm" title="Kích hoạt lại (Đồng bộ)">
-                                            <i class="fas fa-user-plus"></i>
+                                        <button type="submit" class="btn btn-success btn-sm">
+                                            Đi làm lại
                                         </button>
                                     }
                                 </form>
