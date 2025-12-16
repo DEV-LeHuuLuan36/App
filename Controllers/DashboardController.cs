@@ -7,7 +7,7 @@ using App.ViewModels;
 namespace App.Controllers
 {
     // 1. SỬA QUYỀN: Chỉ cho Admin và DevLead vào xem Dashboard (Nơi chạy báo cáo nhạy cảm)
-    [Authorize(Roles = "Role_DevLead_DevOps, Admin")]
+    [Authorize(Roles = "Role_DevLead_DevOps, Admin,Role_ReadOnly_Analyst")]
     public class DashboardController : Controller
     {
         private readonly QLBenhVienContext _context;

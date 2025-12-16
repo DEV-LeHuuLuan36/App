@@ -33,7 +33,7 @@
         <div class="card-header py-3">
             <h6 class="m-0 font-weight-bold">
                 Kết quả từ @ViewData["TuNgay"] đến @ViewData["DenNgay"]
-                (Tổng cộng: @Model.Sum(h => h.TongTien).ToString("N0") VNĐ)
+                (Tổng cộng: @Model.Sum(x => x.TongTien.GetValueOrDefault(0)).ToString("N0") VNĐ)
             </h6>
         </div>
         <div class="card-body">
@@ -53,9 +53,11 @@
                         <tr>
                             <td>@item.MaHoaDon</td>
                             <td>@item.HoTenBenhNhan</td>
-                            <td>@item.NgayLap.ToString("dd/MM/yyyy")</td>
+                            <td>@(item.NgayLap.HasValue? item.NgayLap.Value.ToString("dd/MM/yyyy") : "")</td>
+
                             <td><span class="badge bg-success">@item.TrangThai</span></td>
-                            <td>@item.TongTien.ToString("N0")</td>
+
+                            <td>@item.TongTien.GetValueOrDefault(0).ToString("N0")</td>
                         </tr>
                     }
                 </tbody>

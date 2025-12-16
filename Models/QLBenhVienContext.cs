@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
-
+using App.ViewModels;
 namespace App.Models
 {
     public partial class QLBenhVienContext : DbContext
@@ -15,7 +15,8 @@ namespace App.Models
             : base(options)
         {
         }
-
+        public virtual DbSet<BaoCaoDoanhThuResult> BaoCaoDoanhThuResults { get; set; } = null!;
+        public virtual DbSet<ThongKeBenhResult> ThongKeBenhResults { get; set; } = null!;
         public virtual DbSet<BacSi> BacSis { get; set; } = null!;
         public virtual DbSet<BacSiBenhNhan> BacSiBenhNhans { get; set; } = null!;
         public virtual DbSet<BaoCao> BaoCaos { get; set; } = null!;
@@ -1431,6 +1432,16 @@ namespace App.Models
 
                 entity.Property(e => e.TongCongNo).HasColumnType("decimal(38, 2)");
             });
+            modelBuilder.Entity<BaoCaoDoanhThuResult>(entity =>
+            {
+                entity.HasNoKey(); 
+            });
+            modelBuilder.Entity<ThongKeBenhResult>(entity =>
+            {
+                entity.HasNoKey(); // Quan trọng: Đánh dấu là Keyless
+            });
+
+            OnModelCreatingPartial(modelBuilder);
 
             modelBuilder.Entity<VwThongKeThietBi>(entity =>
             {
