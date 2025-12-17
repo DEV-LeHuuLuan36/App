@@ -1222,7 +1222,11 @@ namespace App.Models
                 entity.HasKey(e => e.MaThuoc)
                     .HasName("PK__Thuoc__4BB1F620FB5CEA0F");
 
-                entity.ToTable("Thuoc");
+                // --- SỬA DÒNG NÀY ---
+                // Thay vì chỉ entity.ToTable("Thuoc");
+                // Hãy thêm cấu hình HasTrigger vào tham số thứ 2:
+                entity.ToTable("Thuoc", tb => tb.HasTrigger("trg_LogCapNhatThuoc"));
+                // --------------------
 
                 entity.HasIndex(e => e.TenThuoc, "IX_Thuoc_TenThuoc");
 
